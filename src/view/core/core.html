@@ -1,0 +1,65 @@
+<div class="container">
+
+    <!-- The justified navigation menu is meant for single line per list item.
+           Multiple lines will require custom code not provided by Bootstrap. -->
+    <div class="masthead">
+        <h3 class="text-muted">BVHA Water Billing System</h3>
+        <nav>
+            <ul class="nav nav-justified">
+                <li><a class="btn" ui-sref="main.dashboard">Dashboard</a>
+                </li>
+                <!-- Single button -->
+                <li uib-dropdown ng-class="status.isopen ? 'active' : ''" >
+                    <a class="btn" id="billing-dropdown" uib-dropdown-toggle>
+                    Billing <span class="caret"></span>
+                  </a>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="billing-dropdown">
+                        <li role="menuitem"><a ui-sref="main.viewBilling">View</a>
+                        </li>
+                         <li role="menuitem"><a ui-sref="main.editBilling">Edit</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li role="menuitem"><a ui-sref="main.generateBilling">Generate</a>
+                        </li>
+                    </ul>
+                </li>
+                <li uib-dropdown ng-class="status.isopen ? 'active' : ''" >
+                    <a class="btn" id="billing-dropdown" uib-dropdown-toggle>
+                    Payment <span class="caret"></span>
+                  </a>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="billing-dropdown">
+                        <li role="menuitem"><a ui-sref="main.viewBilling">View</a>
+                        </li>
+                         <li role="menuitem"><a ui-sref="main.editBilling">Edit</a>
+                        </li>
+                        
+                    </ul>
+                </li>
+                <li uib-dropdown ng-class="status.isopen ? 'active' : ''">
+                    <a class="btn" id="report-drowpdown" uib-dropdown-toggle>
+                    Report <span class="caret"></span>
+                  </a>
+                    <ul uib-dropdown-menu role="menu" aria-labelledby="report-drowpdown">
+                        <li role="menuitem"><a href="#">Montly Collection</a>
+                        </li>
+                        <li role="menuitem"><a href="#">Payment</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li role="menuitem"><a href="#">Billing Statement</a>
+                        </li>
+                    </ul>
+                </li>
+                </li>
+                <li><a class="btn" ui-sref="main.members">Members</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div ui-view></div>
+    <!-- Site footer -->
+    <footer class="footer">
+        <p>&copy; 2016 Sarmiento, Arsenio F.</p>
+    </footer>
+
+</div>
+<!-- /container -->

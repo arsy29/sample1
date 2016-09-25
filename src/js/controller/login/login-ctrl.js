@@ -1,9 +1,21 @@
 (function() {
     'use strict';
     angular.module("bvha2")
-        .controller('LoginController', controller);
+        .controller('LoginController', 
+        	['$scope',
+        	 '$state',
+        	 'LoginService',
+            function($scope, $state, loginService) {
+            	console.log("LoginController");
 
-    function controller() {
-        console.log("Please Login");
-    }
+            	$scope.signin = function(){
+            		console.log("do signin");
+					if(loginService.signin($scope.username, $scope.password)){
+						$state.go('main.dashboard');
+					}
+        		};
+
+
+            }
+        ]);
 }())

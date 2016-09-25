@@ -5,10 +5,10 @@
 
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('auth', {
-                url: '/login',
-                templateUrl: 'view/login/login.html',
-                controller: 'LoginController'
+            .state('main.members', {
+                url: '/members',
+                templateUrl: 'view/member/member.html',
+                controller: 'MemberController'
             })
     }
 }());

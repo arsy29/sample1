@@ -1,0 +1,31 @@
+<div class="billing-body">
+	<h1>Billing</h1>
+	<p>{{mode}}</p>
+	<div class="row">
+		<div class="col-md-4">
+			<div class="panel panel-success members-panel">
+			  <div class="panel-heading">Members</div>
+			  <div class="panel-body" data-spy="scroll" >
+			   	<ul class="list-group" ui-scroll-viewport>
+					<a class="list-group-item" ng-repeat="member in members">
+						{{member.id }} - {{member.name | uppercase}}
+					</a>
+				</ul>
+
+			  </div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="panel panel-success">
+			  <div class="panel-heading">Details</div>
+			  <div class="panel-body">
+			    <div class="input-group input-danger">
+				  <span class="input-group-addon" id="id">Id:</span>
+				  <input type="text" class="form-control" aria-describedby="id">
+				</div>
+
+			  </div>
+			</div>
+		</div>
+	</div>
+</div>
