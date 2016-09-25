@@ -9,58 +9,163 @@
 var gulp = require('gulp');
 var changed = require('gulp-changed-in-place');
 var minifyjs = require('gulp-uglify');
+var minifycss = require('gulp-clean-css');
 var reformatjs = require('gulp-beautify');
 var reformathtml = require('gulp-html-prettify');
 var log = require('gulp-logger');
 var assess = require('gulp-if');
+var sass = require('gulp-sass');
+var param = require('yargs').argv;
+var gulpQueue = require('gulp-queue')(gulp);
+var exit  = require('gulp-exit')
+var server = require('gulp-server-livereload');
+
 
 var env = process.env;
+var queue = new gulpQueue();
 // path
 var src = "src";
-var target = env.CATALINA_HOME+ "/webapps/bvha2";
+var targetServer = env.CATALINA_HOME+ "/webapps/";
 var jsloc = 'src/js/**/*.js';
-var htmlloc = 'src/views/**/*.html';
+var htmlloc = 'src/view/**/*.html';
 var indexloc = 'src/index.html';
+var sassloc = 'scss/**/*.scss';
+var sasssrc = 'scss/main.scss';
+var csstarget = '/assets/css';
+
+var targetEnv;
 
 gulp.task('start', function(){
 	// gulp.watch()
-	console.log(target);
-	gulp.watch(jsloc, ['distjs']);
-	gulp.watch([htmlloc, indexloc], ['disthtml']);
+	targetEnv = targetServer + (param.target || 'bvha2');
+	console.log("deployed to: "+ targetEnv);
+	buildJs(targetEnv, true, true);
+	buildHtml(targetEnv,true);
+	buildsass(targetEnv);
+	// copyLib(targetEnv);
+	gulp.watch(jsloc, queue(['redeployjs']));
+	gulp.watch([htmlloc, indexloc], queue(['redeployhtml']));
+	gulp.watch(sassloc,queue(['redeploysass','buildsass']));
 });
 
 
-gulp.task('distjs', function(){
-	buildJs(true);
+gulp.task('run', function(){
+
+	buildJs(src,true,false);
+	buildHtml(src,true);
+	buildsass(src);
+	gulp.watch(jsloc, queue(['reformatjs']));
+	gulp.watch([htmlloc, indexloc], queue(['reformathtml']));
+	gulp.watch(sassloc,queue(['buildsass']));
+	gulp.src('src')
+	    .pipe(server({
+	      livereload: true,
+	      open: true,
+	      defaultFile: '/index.html'
+	    }));
+
 });
 
-gulp.task('disthtml', function(){
-	buildHtml(true);
+
+gulp.task('reformatjs', function(){
+	buildJs(src,true,false);
 });
 
-gulp.task('distribute', function(){
-	buildJs();
-	buildHtml();
+gulp.task('redeployjs', function(){
+	buildJs(targetEnv, true, false)
 })
 
-function buildJs(flag){
+gulp.task('reformathtml', function(){
+	buildHtml(src,true);
+});
+
+gulp.task('redeployhtml', function(){
+	buildHtml(targetEnv,true);
+})
+
+gulp.task('build', build);
+
+
+gulp.task("copylib", function(){
+	var target = targetServer + (param.target || 'bvha2');
+	console.log(target);
+	copyLib(target);
+})
+
+gulp.task('buildsass', function(){
+	buildsass(src);
+});
+
+gulp.task('redeploysass', function(){
+	buildsass(targetEnv);
+})
+
+gulp.task('default', function(){
+	console.log("start distjs disthtml build copylib buildsass");
+})
+
+gulp.task('deploy', function(){
+	var target = targetServer + (param.target || 'bvha2');
+	console.log("deployed to: "+ target)
+	buildJs(target, false, false);
+	buildHtml(target, false);
+	buildsass(target);
+	copyLib(target);
+})
+
+
+ 
+
+
+function buildJs(target, isChanged, minify){
 	gulp.src(jsloc, {base:src})
-		.pipe(assess(flag,changed()))
-		.pipe(reformatjs())
+		.pipe(assess(isChanged,changed())).on('error', swallowError)
+		.pipe(assess(minify,minifyjs(),reformatjs())).on('error', swallowError)
+		.pipe(gulp.dest(target))
 		.pipe(log())
-		.pipe(gulp.dest(src))
+}
+
+function buildHtml(target, isChanged){
+	gulp.src([htmlloc, indexloc], {base:src})
+		.pipe(assess(isChanged,changed()))
+		.pipe(reformathtml())
+		.pipe(gulp.dest(target))
+		.pipe(log())
+		.on('error', swallowError)
+}
+
+function copyLib(target){
+	gulp.src('src/library/**/*', {base:src})
 		.pipe(gulp.dest(target))
 		.pipe(log());
 }
 
-function buildHtml(flag){
-	gulp.src([htmlloc, indexloc], {base:src})
-		.pipe(assess(flag,changed()))
-		.pipe(reformathtml())
-		.pipe(log())
-		.pipe(gulp.dest(src))
-		.pipe(gulp.dest(target))
-		.pipe(log());
+function buildsass(target){
+	console.log(target + csstarget);
+	gulp.src(sasssrc)
+		.pipe(sass())
+		.on('error', sass.logError)
+		.pipe(minifycss())
+		.pipe(gulp.dest(target + csstarget));
 }
+
+function build(){
+	buildJs(src, false, false);
+	buildHtml(src, false);
+	buildsass(src);
+}
+
+function swallowError (error) {
+
+  // If you want details of the error in the console
+  console.log(error.toString())
+
+  this.emit('end')
+}
+
+
+
+
+
 
 
