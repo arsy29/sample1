@@ -35,7 +35,7 @@ var csstarget = '/assets/css';
 
 var targetEnv;
 
-gulp.task('start', function(){
+gulp.task('serve', function(){
 	// gulp.watch()
 	targetEnv = targetServer + (param.target || 'bvha2');
 	console.log("deployed to: "+ targetEnv);
@@ -64,8 +64,12 @@ gulp.task('run', function(){
 	      defaultFile: '/index.html'
 	    }));
 
+
 });
 
+gulp.task('redeployjs', function(){
+	buildJs(targetEnv, true, false)
+})
 
 gulp.task('reformatjs', function(){
 	buildJs(src,true,false);
@@ -97,6 +101,7 @@ gulp.task('buildsass', function(){
 });
 
 gulp.task('redeploysass', function(){
+
 	buildsass(targetEnv);
 })
 
