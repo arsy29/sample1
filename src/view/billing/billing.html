@@ -2,30 +2,221 @@
 	<h1>Billing</h1>
 	<p>{{mode}}</p>
 	<div class="row">
-		<div class="col-md-4">
-			<div class="panel panel-success members-panel">
+		<div class="col-lg-3">
+			<div class="panel panel-default members-panel">
 			  <div class="panel-heading">Members</div>
 			  <div class="panel-body" data-spy="scroll" >
-			   	<ul class="list-group" ui-scroll-viewport>
+			   	<ul class="list-group no-padding" ui-scroll-viewport>
 					<a class="list-group-item" ng-repeat="member in members">
 						{{member.id }} - {{member.name | uppercase}}
 					</a>
 				</ul>
-
 			  </div>
 			</div>
 		</div>
-		<div class="col-md-8">
-			<div class="panel panel-success">
-			  <div class="panel-heading">Details</div>
-			  <div class="panel-body">
-			    <div class="input-group input-danger">
-				  <span class="input-group-addon" id="id">Id:</span>
-				  <input type="text" class="form-control" aria-describedby="id">
-				</div>
-
-			  </div>
+		<div class="col-lg-9">
+			<uib-accordion close-others="oneAtATime">
+			    <div uib-accordion-group class="panel-default" heading="Member Details" is-open="accordion.member" >
+			    	<uib-accordion-heading>
+				        Member Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': accordion.member, 'glyphicon-chevron-right': !accordion.member}"></i>
+				      </uib-accordion-heading>
+			      	<form>
+						<div class="row">
+							<div class="col col-lg-2">
+						    <div class="form-group">
+							  <label  class="form-label" id="id">Id:</label>
+							  <input type="text" class="form-control" aria-describedby="id">
+							</div>
+						</div>											
+						<div class="col col-lg-5">
+							<div class="form-group">
+							  <label  class="form-label" id="lname">Last Name:</label>
+							  <input type="text" class="form-control" aria-describedby="lname">
+							</div>
+						</div>
+						<div class="col col-lg-5">
+							<div class="form-group">
+							  <label  class="form-label" id="fname">First Name:</label>
+							  <input type="text" class="form-control" aria-describedby="fname">
+							</div>
+						</div>
+						</div>
+						<div class='row'>
+							<div class='col col-lg-12'>
+								<div class="form-group">
+									<label  class="form-label" id="address">Address:</label>
+									<div class="input-group">
+									  <input type="text" class="form-control" aria-describedby="address">
+									  <span class="input-group-btn">
+									    <button class="btn btn-primary" type="button">View</button>
+									  </span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+			    </div>
+			    <div uib-accordion-group class="panel-default" heading="Billing Details" is-open="accordion.billing" >
+			    	<uib-accordion-heading>
+				        Billing Details <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': accordion.billing, 'glyphicon-chevron-right': !accordion.billing}"></i>
+				      </uib-accordion-heading>
+		      	<form>
+					<div class="form-divider"></div>
+					<div class="row">
+						<div class="col col-lg-12">
+							<div class="form-group">
+								<label  class="form-header" id="assocFee">Association Dues</label>
+								<div class="input-group">
+								  <div class="input-group-addon">P</div>
+								  <input type="number" class="form-control" aria-describedby="assocFee">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<label class="form-header">Water Dues</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-lg-4">
+							<div class="form-group">
+							  <label  class="form-label" id="presReading">Present Reading:</label>
+							  <input type="number" class="form-control" aria-describedby="presReading">
+							</div>
+						</div>
+						<div class="col col-lg-4">
+							<div class="form-group">
+							  <label  class="form-label" id="prevReading">Previous Reading:</label>
+							  <input type="number" class="form-control" aria-describedby="prevReading">
+							</div>
+						</div>
+						<div class="col col-lg-4">
+							<div class="form-group">
+							  <label  class="form-label" id="consumption">Total Consumption:</label>
+							  <input type="text" class="form-control" aria-describedby="consumption">
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class=col-lg-12>
+							<div class="form-group">
+							<label class="form-label" id="breakdown">Breakdown</label>
+							<div class="row" aria-describedby="breakdown">
+								<div class="col-lg-4">
+									range
+								</div>
+								<div class="col-lg-4">
+									amount
+								</div>
+								<div class="col-lg-4">
+									<div class="form-group">
+										<div class="input-group">
+										<div class="input-group-addon">P</div>
+										<input class='form-control' type="text">
+										</div>
+									</div>
+								</div>
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-lg-4">
+							<label class="form-label"> Total: </label>
+						</div>
+						<div class="col col-lg-4 col-lg-offset-4">
+							<div class="input-group">
+								<div class="input-group-addon">P</div>
+								<input class='form-control' type="text">
+								</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<label class="form-header">Others</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<div class="form-group">
+								<label class= "form-label">Description:</label>
+								<input type="text" class="form-control">
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="" ass="form-group">
+								<label class= "form-label">Amount:</label>
+								<div class="input-group">
+									<div class="input-group-addon">P</div>
+									<input type="number" class="form-control">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-lg-12">
+							<div class="form-group">
+								<label  class="form-header" id="currentTotal">Current Total</label>
+								<div class="input-group">
+								  <div class="input-group-addon">P</div>
+								  <input type="number" class="form-control" aria-describedby="currentTotal">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-12">
+							<label class="form-header">Previous Billing</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-lg-6">
+							<div class="form-group">
+								<label  class="form-label" id="prevTotal">Previous Total</label>
+								<div class="input-group">
+								  <div class="input-group-addon">P</div>
+								  <input type="number" class="form-control" aria-describedby="prevTotal">
+								</div>
+							</div>
+						</div>
+						<div class="col col-lg-6">
+							<div class="form-group">
+								<label  class="form-label" id="prevPayment">Previous Payment</label>
+								<div class="input-group">
+								  <div class="input-group-addon">P</div>
+								  <input type="number" class="form-control" aria-describedby="prevPayment">
+								</div>
+							</div>
+						</div>
+						
+					</div>
+					<div class='row'>
+						<div class='col col-lg-12'>
+							<div class="form-group">
+								<label  class="form-label" id="remaining">Remaining</label>
+								<div class="input-group">
+								  <div class="input-group-addon">P</div>
+								  <input type="number" class="form-control" aria-describedby="remaining">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col col-lg-12">
+							<div class="form-group">
+								<label  class="form-header" id="grandTotal">Grand Total</label>
+								<div class="input-group">
+								  <div class="input-group-addon">P</div>
+								  <input type="number" class="form-control" aria-describedby="grandTotal">
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
 			</div>
+		    </uib-accordion>
+			
 		</div>
 	</div>
 </div>

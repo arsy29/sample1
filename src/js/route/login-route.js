@@ -5,7 +5,7 @@
 
     function routeConfig($stateProvider) {
         $stateProvider
-            .state('auth', {
+            .state('login', {
                 url: '/login',
                 templateUrl: 'view/login/login.html',
                 controller: 'LoginController'
