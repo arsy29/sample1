@@ -45,15 +45,31 @@ gulp.task('serve', function(){
 	// copyLib(targetEnv);
 	gulp.watch(jsloc, queue(['redeployjs']));
 	gulp.watch([htmlloc, indexloc], queue(['redeployhtml']));
-	gulp.watch(sassloc,queue(['redeloysass','buildsass']));
-	// gulp.src('src')
- //    .pipe(server({
- //      livereload: true,
- //      open: true,
- //      defaultFile: '/index.html'
- //    }));
+	gulp.watch(sassloc,queue(['redeploysass','buildsass']));
 });
 
+
+gulp.task('run', function(){
+
+	buildJs(src,true,false);
+	buildHtml(src,true);
+	buildsass(src);
+	gulp.watch(jsloc, queue(['reformatjs']));
+	gulp.watch([htmlloc, indexloc], queue(['reformathtml']));
+	gulp.watch(sassloc,queue(['buildsass']));
+	gulp.src('src')
+	    .pipe(server({
+	      livereload: true,
+	      open: true,
+	      defaultFile: '/index.html'
+	    }));
+
+
+});
+
+gulp.task('redeployjs', function(){
+	buildJs(targetEnv, true, false)
+})
 
 gulp.task('reformatjs', function(){
 	buildJs(src,true,false);
@@ -84,7 +100,8 @@ gulp.task('buildsass', function(){
 	buildsass(src);
 });
 
-gulp.task('redeloysass', function(){
+gulp.task('redeploysass', function(){
+
 	buildsass(targetEnv);
 })
 
