@@ -1,6 +1,32 @@
+$color-primary:#ddd;
+$color-secondary:#f5f5f5;
+
 body {
 	font-size: 12px;
 }
+
+.form-control {
+	font-size: 12px;
+	height: 26px;
+}
+
+.form-group {
+	padding-left: 10px;
+}
+.input-group {
+	.input-group-addon {
+		@extend .form-control;
+		font-weight: bold;
+	}
+	.input-group-btn button{
+		@extend .form-control;
+		font-weight: bold;
+		padding-top: 3px;
+	}
+}
+
+
+
 
 
 @import 'login';
