@@ -2,7 +2,7 @@
     'use strict';
     angular.module('bvha2')
         .config(['$routeProvider', '$stateProvider', function($routeProvider, $stateProvider) {
-            
+
             $routeProvider.otherwise({
                 redirectTo: '/login'
             });
@@ -13,6 +13,6 @@
                     abstract: true,
                     templateUrl: 'view/core/core.html',
                     controller: 'CoreController'
-            });
+                });
         }]);
 }());

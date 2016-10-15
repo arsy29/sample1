@@ -17,8 +17,9 @@ var assess = require('gulp-if');
 var sass = require('gulp-sass');
 var param = require('yargs').argv;
 var gulpQueue = require('gulp-queue')(gulp);
-var exit  = require('gulp-exit')
+var exit  = require('gulp-exit');
 var server = require('gulp-server-livereload');
+var wait = require('gulp-wait');
 
 
 var env = process.env;
@@ -61,7 +62,7 @@ gulp.task('run', function(){
 	    .pipe(server({
 	      livereload: true,
 	      open: true,
-	      defaultFile: '/index.html'
+	      defaultFile: 'index.html'
 	    }));
 
 
@@ -124,16 +125,18 @@ gulp.task('deploy', function(){
 
 function buildJs(target, isChanged, minify){
 	gulp.src(jsloc, {base:src})
+		.pipe(wait(300))
 		.pipe(assess(isChanged,changed())).on('error', swallowError)
-		.pipe(assess(minify,minifyjs(),reformatjs())).on('error', swallowError)
+		.pipe(assess(minify,minifyjs(),reformatjs({indentSize: 0.5}))).on('error', swallowError)
 		.pipe(gulp.dest(target))
 		.pipe(log())
 }
 
 function buildHtml(target, isChanged){
 	gulp.src([htmlloc, indexloc], {base:src})
+		.pipe(wait(300))
 		.pipe(assess(isChanged,changed()))
-		.pipe(reformathtml())
+		.pipe(reformathtml({indentSize:0.5}))
 		.pipe(gulp.dest(target))
 		.pipe(log())
 		.on('error', swallowError)
@@ -148,6 +151,7 @@ function copyLib(target){
 function buildsass(target){
 	console.log(target + csstarget);
 	gulp.src(sasssrc)
+		.pipe(wait(300))
 		.pipe(sass())
 		.on('error', sass.logError)
 		.pipe(minifycss())

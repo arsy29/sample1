@@ -3,7 +3,7 @@
     angular.module('bvha2')
         .controller('CoreController', ['$scope',
             function($scope) {
-            	console.log('CoreController');
+                console.log('CoreController');
             }
         ]);
 }());
