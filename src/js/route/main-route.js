@@ -3,9 +3,7 @@
     angular.module('bvha2')
         .config(['$routeProvider', '$stateProvider', function($routeProvider, $stateProvider) {
 
-            $routeProvider.otherwise({
-                redirectTo: '/login'
-            });
+
 
             $stateProvider
                 .state('main', {
@@ -14,5 +12,9 @@
                     templateUrl: 'view/core/core.html',
                     controller: 'CoreController'
                 });
+
+            $routeProvider.otherwise({
+                redirectTo: '/login'
+            });
         }]);
 }());

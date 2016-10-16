@@ -42,8 +42,7 @@ body {
 }
 
 select {
-	padding: 0 5px;
-    text-align: right
+	padding: 0 10px !important;
 }
 
 .control-label{
@@ -54,3 +53,4 @@ select {
 @import 'login';
 @import 'core';
 @import 'billing';
+@import 'member';
