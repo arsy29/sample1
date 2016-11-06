@@ -62,7 +62,8 @@ gulp.task('run', function(){
 	    .pipe(server({
 	      livereload: true,
 	      open: true,
-	      defaultFile: 'index.html'
+	      defaultFile: 'index.html',
+	      proxies: [{source: '/endpoint', target: 'http://localhost:8080/billing-service'}]
 	    }));
 
 

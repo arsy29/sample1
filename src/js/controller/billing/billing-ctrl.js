@@ -1,64 +1,40 @@
 (function() {
     'use strict';
     angular.module('bvha2')
-        .controller('ViewBillingCtrl', ['$scope', '$uibModal', function($scope, $uibModal) {
+        .controller('ViewBillingCtrl', ['$scope', '$uibModal', 'PaymentService', 'BillingService', 'Constant', function($scope, $uibModal, paymentService, billingService, constant) {
             console.log('ViewBillingCtrl');
             $scope.mode = "view";
-
-            //to be removed
-
-            var testinit = function(count) {
-                $scope.members = [{
-                    name: 'test1',
-                    id: '1',
-                    remaining: 2000,
-                    member: {
-                        lastName: 'test',
-                        firstName: 'sample',
-                        address: 'Laguna St.'
-                    },
-                    billing: {
-                        assocDue: 500,
-                        presentReading: 120,
-                        previousReading: 100,
-                        totalConsumed: 20,
-                        waterAmount: 500,
-                        otherDescription: 'Lights',
-                        otherAmount: -200,
-                        currentTotal: 1000,
-                        previousTotal: 500,
-                        previousPayment: 450,
-                        grandTotal: 1050
-                    },
-                    payments: [{
-                        receiptNo: '10001',
-                        amount: 500,
-                        date: 'Mon Sep 26 2016 00:00:00 GMT+0800 (Malay Peninsula Standard Time)'
-                    }, {
-                        receiptNo: '10002',
-                        amount: 200,
-                        date: new Date('Mon Sep 26 2016 00:00:00 GMT+0800 (Malay Peninsula Standard Time)')
-                    }, {
-                        receiptNo: '10003',
-                        amount: 100,
-                        date: 'Mon Sep 26 2016 00:00:00 GMT+0800 (Malay Peninsula Standard Time)'
-                    }]
-                }, {
-                    name: 'test2',
-                    id: '2',
-                    remaining: 2000
-                }];
-            };
-            testinit();
-
+            $scope.constant = constant;
             //end
 
             /* Select Member */
             $scope.loadMember = function(index) {
-                $scope.selected = $scope.members[index];
-                $scope.computed = {};
-                setRemaining();
-                computeSumOfCollections();
+                //initialize
+                $scope.selected = {
+                        member: $scope.billing.billList[index],
+                        payments: []
+                    }
+                    //billing
+                billingService.getDetails($scope.selected.member.id, $scope.billing.period.id).then(function(response) {
+                    console.log(response);
+                    if (response.data.responseStatus > 0) {
+                        $scope.selected.billing = response.data.responseResult;
+                        $scope.selected.billing.totalConsumed = $scope.selected.billing.currReading - $scope.selected.billing.prevReading;
+                        $scope.selected.billing.remaining = $scope.selected.billing.previousTotal - $scope.selected.billing.previousPaymentTotal;
+                        $scope.computed = {};
+                        paymentService.getPaymentsById($scope.selected.billing.id).then(function(response) {
+                            if (response.data.responseStatus > 0) {
+                                $scope.selected.payments = response.data.responseResult;
+                                computeSumOfCollections();
+
+                            }
+                        });
+
+                    }
+                });
+
+                //payment
+
             }
 
             /* Billing */
@@ -66,12 +42,41 @@
                 isDisabled: true
             }
 
-            //computations
-            var setRemaining = function() {
-                if ($scope.selected.billing) {
-                    $scope.computed.remaining = $scope.selected.billing.previousTotal - $scope.selected.billing.previousPayment;
+            billingService.getBillingYear().then(function(response) {
+                if (response.data.responseStatus > 0) {
+                    $scope.billing.yearList = response.data.responseResult;
+                    if ($scope.billing.yearList.length > 0) {
+                        $scope.billing.year = $scope.billing.yearList[0];
+                        $scope.billing.getPeriodByYear($scope.billing.year)
+                    }
                 }
+            })
+
+            $scope.billing.getPeriodByYear = function(year) {
+                billingService.getPeriodByYear(year).then(function(response) {
+                    if (response.data.responseStatus > 0) {
+                        $scope.billing.periodList = response.data.responseResult;
+                        if ($scope.billing.periodList.length > 0) {
+                            $scope.billing.period = $scope.billing.periodList[0];
+                            $scope.billing.getMemberBillList($scope.billing.period)
+                        }
+                    }
+                })
             }
+
+            $scope.billing.getMemberBillList = function(period) {
+                billingService.getMemberBillList(period.id).then(function(response) {
+                    if (response.data.responseStatus > 0) {
+                        $scope.billing.billList = response.data.responseResult;
+                        $scope.billing.cutOff = new Date(period.periodCutOff);
+                        $scope.selected = null;
+                    }
+                })
+            }
+
+
+            //computations
+
 
             /* PAYMENT */
             //ADD/EDIT
@@ -80,33 +85,43 @@
                 total: 0
             };
             $scope.openPaymentModal = function(mode) {
-                    $uibModal.open({
-                        templateUrl: "view/collection/payment-modal.html",
-                        resolve: {
-                            form: function() {
-                                return mode ? $scope.selected.payments[$scope.paymentModel.selected] : null;
-                            }
-                        },
-                        controller: ['$scope', 'form', function($scope, form) {
-                            $scope.form = form || {};
-                            $scope.proceed = form ? function() {
-                                    this.$close();
-                                } :
-                                function() {
-                                    this.$close($scope.form);
-                                };
-                            $scope.cancel = function() {
-                                this.$dismiss();
-                            }
-
-                        }]
-                    }).result.then(function(result) {
-                        if (result) {
-                            $scope.selected.payments.push(result);
+                $uibModal.open({
+                    templateUrl: "view/collection/payment-modal.html",
+                    resolve: {
+                        form: function() {
+                            return mode ? $scope.selected.payments[$scope.paymentModel.selected] : null;
                         }
-                    }).finally(computeSumOfCollections);
-                }
-                //DELETE
+                    },
+                    controller: ['$scope', 'form', function($scope, form) {
+                        $scope.form = form || {};
+                        if (form) {
+                            form.receiptDate = new Date(form.paymentDate);
+                        }
+                        $scope.proceed = form ? function() {
+                                this.$close();
+                            } :
+                            function() {
+                                this.$close($scope.form);
+                            };
+                        $scope.cancel = function() {
+                            this.$dismiss();
+                        }
+                        $scope.$watch("form.receiptDate", function() {
+                            if ($scope.form.receiptDate) {
+                                $scope.form.paymentDate = $scope.form.receiptDate.toISOString();
+
+                            }
+                        });
+
+                    }]
+                }).result.then(function(result) {
+                    if (result) {
+                        $scope.selected.payments.push(result);
+                    }
+                }).finally(computeSumOfCollections);
+            }
+
+            //DELETE
             $scope.deletePayment = function() {
                 $scope.selected.payments.splice($scope.paymentModel.selected, 1);
                 $scope.paymentModel.selected = null;

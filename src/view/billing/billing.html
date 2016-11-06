@@ -11,29 +11,19 @@
             <div class="col col-sm-4">
                 <div class="form-group">
                     <label class="control-label">Year:</label>
-                    <select class="form-control">
-                        <option>2013</option>
-                        <option>2014</option>
-                        <option>2015</option>
-                        <option>2016</option>
-                        <option>2017</option>
+                    <select class="form-control" ng-options="item as item for item in billing.yearList" ng-model="billing.year" ng-click="billing.getPeriodByYear(billing.year)">
                     </select>
                 </div>
                 <div class="form-group">
                     <label class="control-label">Month:</label>
-                    <select class="form-control">
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
+                    <select class="form-control" ng-options="item as constant.month[item.periodMonth] for item in billing.periodList" ng-model="billing.period" ng-click="billing.getMemberBillList(billing.period)">
                     </select>
                 </div>
             </div>
             <div class="col col-sm-4 col-sm-offset-4">
                 <div class="form-group">
                     <label class="control-label">Cut-off Period:</label>
-                    <input class="form-control" type="Date" readonly>
+                    <input class="form-control" type="Date" ng-model="billing.cutOff" readonly>
                 </div>
             </div>
         </div>
@@ -51,9 +41,9 @@
                 </div>
                 <div class="panel-body" data-spy="scroll">
                     <ul class="list-group no-padding" ui-scroll-viewport>
-                        <a class="list-group-item" ng-repeat="member in members track by $index" ng-click="loadMember($index)">
+                        <a class="list-group-item" ng-repeat="member in billing.billList track by $index" ng-click="loadMember($index)">
 
-						{{member.id }} - {{member.name | uppercase}}
+						{{member.id }} - {{member.lName + ", " + member.fName | uppercase}}
 						 <span class="badge">{{member.remaining | currency : 'Php ' : 2}}</span>
 					</a>
                     </ul>
@@ -73,19 +63,19 @@
                             <div class="col col-sm-2 members">
                                 <div class="form-group">
                                     <label class="control-label" id="id">Id:</label>
-                                    <input type="text" class="form-control" aria-describedby="id" readonly ng-model="selected.id">
+                                    <input type="text" class="form-control" aria-describedby="id" readonly ng-model="selected.member.id">
                                 </div>
                             </div>
                             <div class="col col-sm-5">
                                 <div class="form-group">
                                     <label class="control-label" id="lname">Last Name:</label>
-                                    <input type="text" class="form-control" aria-describedby="lname" readonly ng-model="selected.member.lastName">
+                                    <input type="text" class="form-control" aria-describedby="lname" readonly ng-model="selected.member.lName">
                                 </div>
                             </div>
                             <div class="col col-sm-5">
                                 <div class="form-group">
                                     <label class="control-label" id="fname">First Name:</label>
-                                    <input type="text" class="form-control" aria-describedby="fname" readonly ng-model="selected.member.firstName">
+                                    <input type="text" class="form-control" aria-describedby="fname" readonly ng-model="selected.member.fName">
                                 </div>
                             </div>
                         </div>
@@ -128,7 +118,7 @@
 
                                     <div class="input-group">
                                         <div class="input-group-addon">Php</div>
-                                        <input type="number" class="form-control" aria-describedby="assocFee" readonl ng-model="selected.billing.assocDue" readonly>
+                                        <input type="number" class="form-control" aria-describedby="assocFee" readonl ng-model="selected.billing.assocFee" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -142,13 +132,13 @@
                             <div class="col col-sm-4">
                                 <div class="form-group">
                                     <label class="control-label" id="presReading">Present Reading:</label>
-                                    <input type="number" class="form-control" aria-describedby="presReading" ng-readonly="billing.isDisabled" required ng-model="selected.billing.presentReading">
+                                    <input type="number" class="form-control" aria-describedby="presReading" ng-readonly="billing.isDisabled" required ng-model="selected.billing.currReading">
                                 </div>
                             </div>
                             <div class="col col-sm-4">
                                 <div class="form-group">
                                     <label class="control-label" id="prevReading">Previous Reading:</label>
-                                    <input type="number" class="form-control" aria-describedby="prevReading" ng-readonly="billing.isDisabled" required ng-model="selected.billing.previousReading">
+                                    <input type="number" class="form-control" aria-describedby="prevReading" ng-readonly="billing.isDisabled" required ng-model="selected.billing.prevReading">
                                 </div>
                             </div>
                             <div class="col col-sm-4">
@@ -258,7 +248,7 @@
                                     <label class="control-label" id="prevPayment">Previous Payment</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">Php</div>
-                                        <input type="number" class="form-control" aria-describedby="prevPayment" readonly ng-model="selected.billing.previousPayment">
+                                        <input type="number" class="form-control" aria-describedby="prevPayment" readonly ng-model="selected.billing.previousPaymentTotal">
                                     </div>
                                 </div>
                             </div>
@@ -267,22 +257,11 @@
                                     <label class="control-label" id="remaining">Total:</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">Php</div>
-                                        <input type="number" class="form-control" aria-describedby="remaining" readonly ng-model="computed.remaining">
+                                        <input type="number" class="form-control" aria-describedby="remaining" readonly ng-model="selected.billing.remaining">
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="row">
-                            <div class="col col-sm-12">
-                                <div class="form-group">
-                                    <label class="form-header" id="grandTotal">Grand Total</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">Php</div>
-                                        <input type="number" class="form-control" aria-describedby="grandTotal">
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </form>
                 </div>
                 <div uib-accordion-group class="panel-default" heading="Collections" is-open="accordion.collections" ng-init="accordion.collections = false">
@@ -293,7 +272,7 @@
                     </uib-accordion-heading>
                     <div class="row btn-group">
                         <div class="col col-sm-12">
-                            <button class="btn btn-sm btn-default" ng-click="openPaymentModal(0)">Add</button>
+                            <button class="btn btn-sm btn-default" ng-click="openPaymentModal(0)" ng-disabled="!(selected)">Add</button>
                             <button class="btn btn-sm btn-default" ng-click="openPaymentModal(1)" ng-disabled="!(paymentModel.selected)">Edit</button>
                             <button class="btn btn-sm btn-default" ng-click="deletePayment()" ng-disabled="!(paymentModel.selected)">Delete</button>
                         </div>
@@ -311,7 +290,7 @@
                                 <input type="radio" name="collectionRadios" ng-model="paymentModel.selected" value="{{$index}}">
                             </td>
                             <td>{{data.receiptNo}}</td>
-                            <td>{{data.date | date : 'MMMM dd, yyyy'}}</td>
+                            <td>{{data.paymentDate | date : 'MMMM dd, yyyy'}}</td>
                             <!-- <td>{{data.remarks}}</td> -->
                             <td>{{data.amount | currency : "Php " : 2}}</td>
                         </tr>
