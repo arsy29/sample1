@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     angular.module('bvha2')
-        .config(['$routeProvider', '$stateProvider', function($routeProvider, $stateProvider) {
+        .config(['$urlRouterProvider', '$stateProvider', function($urlRouterProvider, $stateProvider) {
 
 
 
@@ -13,8 +13,8 @@
                     controller: 'CoreController'
                 });
 
-            $routeProvider.otherwise({
-                redirectTo: '/login'
-            });
+            $urlRouterProvider.otherwise(
+                '/login'
+            );
         }]);
 }());

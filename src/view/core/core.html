@@ -1,65 +1,34 @@
-<div class="container">
-
-    <!-- The justified navigation menu is meant for single line per list item.
-           Multiple lines will require custom code not provided by Bootstrap. -->
-    <div class="masthead">
-        <h3 class="text-muted">BVHA Water Billing System</h3>
-        <nav>
-            <ul class="nav nav-justified">
-                <li><a class="btn" ui-sref="main.dashboard">Dashboard</a>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">BVHA Water Billing System</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a>Dashboard</a>
                 </li>
-                <!-- Single button -->
-                <li uib-dropdown ng-class="status.isopen ? 'active' : ''">
-                    <a class="btn" id="billing-dropdown" uib-dropdown-toggle>
-                    Billing <span class="caret"></span>
-                  </a>
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="billing-dropdown">
-                        <li role="menuitem"><a ui-sref="main.viewBilling">View</a>
-                        </li>
-                        <li role="menuitem"><a ui-sref="main.editBilling">Edit</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li role="menuitem"><a ui-sref="main.generateBilling">Generate</a>
-                        </li>
-                    </ul>
+                <li><a ui-sref="main.viewBilling">Billing</a>
                 </li>
-                <li uib-dropdown ng-class="status.isopen ? 'active' : ''">
-                    <a class="btn" id="billing-dropdown" uib-dropdown-toggle>
-                    Payment <span class="caret"></span>
-                  </a>
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="billing-dropdown">
-                        <li role="menuitem"><a ui-sref="main.viewBilling">View</a>
-                        </li>
-                        <li role="menuitem"><a ui-sref="main.editBilling">Edit</a>
-                        </li>
-
-                    </ul>
+                <li><a>Payment</a>
                 </li>
-                <li uib-dropdown ng-class="status.isopen ? 'active' : ''">
-                    <a class="btn" id="report-drowpdown" uib-dropdown-toggle>
-                    Report <span class="caret"></span>
-                  </a>
-                    <ul uib-dropdown-menu role="menu" aria-labelledby="report-drowpdown">
-                        <li role="menuitem"><a href="#">Montly Collection</a>
-                        </li>
-                        <li role="menuitem"><a href="#">Payment</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li role="menuitem"><a href="#">Billing Statement</a>
-                        </li>
-                    </ul>
+                <li><a>Report</a>
                 </li>
-                </li>
-                <li><a class="btn" ui-sref="main.members">Members</a>
+                <li><a ui-sref="main.members">Member</a>
                 </li>
             </ul>
-        </nav>
+        </div>
     </div>
-    <div ui-view></div>
-    <!-- Site footer -->
-    <footer class="footer">
-        <p>&copy; 2016 Sarmiento, Arsenio F.</p>
-    </footer>
+</nav>
 
-</div>
-<!-- /container -->
+<div ui-view></div>
+<!-- <footer class="footer">
+    <p>&copy; 2016 Sarmiento, Arsenio F.</p>
+</footer> -->
+
+

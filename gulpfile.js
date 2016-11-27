@@ -137,7 +137,7 @@ function buildHtml(target, isChanged){
 	gulp.src([htmlloc, indexloc], {base:src})
 		.pipe(wait(300))
 		.pipe(assess(isChanged,changed()))
-		.pipe(reformathtml({indentSize:0.5}))
+		.pipe(reformathtml({indent_size:2}))
 		.pipe(gulp.dest(target))
 		.pipe(log())
 		.on('error', swallowError)

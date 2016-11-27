@@ -5,10 +5,17 @@
             var endpoint = "/endpoint";
             var service = {};
 
-            service.getPaymentsById = function(billingId) {
+            this.getPaymentsById = function(billingId) {
                 return $http.get(endpoint + "/payment/payments/" + billingId);
             }
 
-            return service;
+            this.addOrEditPaymentsToId = function(payment) {
+                return $http.post(endpoint + "/payment/persist", payment);
+            }
+
+            this.deletePaymentsById = function(paymentId) {
+                return $http.get(endpoint + "/payment/delete/" + paymentId);
+            }
+
         }])
 }())
