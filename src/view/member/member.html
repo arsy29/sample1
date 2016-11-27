@@ -1,41 +1,43 @@
-<div class="member-body well">
-    <div class="row ">
-        <div class="col col-sm-12">
-            <div class="page-header">
-                <h4>Member Manager</h4>
-            </div>
-        </div>
-    </div>
+<div class="container-fluid">
     <div class="row">
-        <div class="col col-sm-3">
-            <div class="panel panel-default members-panel">
-                <div class="panel-heading">
-                    <form class='form-inline'>
-                        <div class="form-group billing-filter">
-                            <label class="control-label">Filter:</label>
-                            <input type="text" class="form-control">
-                        </div>
-                    </form>
+        <div class="col col-sm-12 main">
+            <div class="member-body well">
+                <div class="page-header">
+                    <h4>Member Manager</h4>
                 </div>
-                <div class="panel-body" data-spy="scroll">
-                    <ul class="list-group no-padding" ui-scroll-viewport>
-                        <a class="list-group-item" ng-repeat="member in members track by $index" ng-click="loadMember($index)">
+                <div class="row">
+                    <div class="col col-sm-3">
+                        <div class="panel panel-default members-panel">
+                            <div class="panel-heading">
+                                <form class='form-inline'>
+                                    <div class="form-group billing-filter">
+                                        <label class="control-label">Filter:</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="panel-body" data-spy="scroll">
+                                <ul class="list-group no-padding" ui-scroll-viewport>
+                                    <a class="list-group-item" ng-repeat="member in members track by $index" ng-click="loadMember($index)">
 
 						{{member.id }} - {{member.name | uppercase}}
 						 <span class="badge">{{member.remaining | currency : 'Php ' : 2}}</span>
 					</a>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col col-sm-9">
-            <div class="panel panel-default details-panel">
-                <div class="panel-heading">
-                    <h5>Member Details</h5>
-                </div>
-                <div class="panel-body">
-                    <form>
-                    </form>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col col-sm-9">
+                        <div class="panel panel-default details-panel">
+                            <div class="panel-heading">
+                                <h5>Member Details</h5>
+                            </div>
+                            <div class="panel-body">
+                                <form>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

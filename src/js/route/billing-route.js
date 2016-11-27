@@ -15,7 +15,7 @@
                     controller: 'EditBillingCtrl'
                 })
                 .state('main.generateBilling', {
-                    url: '/edit',
+                    url: '/generate',
                     templateUrl: 'view/billing/billing.html',
                     controller: 'GenerateBillingCtrl'
                 })
