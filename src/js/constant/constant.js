@@ -14,6 +14,9 @@
                 "October",
                 "November",
                 "December"
+            ],
+            "ContactType": [
+                "Mobile", "Home", "Office", "Other"
             ]
         })
 }())

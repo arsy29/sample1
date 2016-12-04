@@ -1,45 +1,148 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col col-sm-12 main">
-            <div class="member-body well">
-                <div class="page-header">
-                    <h4>Member Manager</h4>
-                </div>
-                <div class="row">
-                    <div class="col col-sm-3">
-                        <div class="panel panel-default members-panel">
-                            <div class="panel-heading">
-                                <form class='form-inline'>
-                                    <div class="form-group billing-filter">
-                                        <label class="control-label">Filter:</label>
-                                        <input type="text" class="form-control">
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="panel-body" data-spy="scroll">
-                                <ul class="list-group no-padding" ui-scroll-viewport>
-                                    <a class="list-group-item" ng-repeat="member in members track by $index" ng-click="loadMember($index)">
-
-						{{member.id }} - {{member.name | uppercase}}
-						 <span class="badge">{{member.remaining | currency : 'Php ' : 2}}</span>
-					</a>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-sm-9">
-                        <div class="panel panel-default details-panel">
-                            <div class="panel-heading">
-                                <h5>Member Details</h5>
-                            </div>
-                            <div class="panel-body">
-                                <form>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="row">
+    <div class="col col-sm-12 main">
+      <div class="member-body">
+        <div class="page-header">
+          <h3>Member Manager</h3>
         </div>
+        <div class="row flex member-details">
+          <div class="col col-sm-6 members">
+            <div class="panel panel-default members-panel">
+              <div class="panel-heading">
+                <form class='form-inline'>
+                  <div class="form-group billing-filter">
+                    <label class="control-label">Filter:</label>
+                    <input type="text" class="form-control" ng-model="keyword" ng-disabled="isEditable">
+                  </div>
+                  <a class="btn btn-default" ng-click="newMember()" ng-disabled="isEditable">Add</a>
+                </form>
+              </div>
+              <div class="panel-body" data-spy="scroll">
+                <table class="table table-hover member-table">
+                  <thead>
+                    <tr>
+                      <th class="col-sm-2">Id</th>
+                      <th class="col-sm-4">Last Name</th>
+                      <th class="col-sm-4">First Name</th>
+                      <th class="col-sm-2">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="member in membersFiltered track by member.id" ng-click="selectMember($index)" ng-class="$index == selectedIdx ? 'active' : ''">
+                      <td>{{member.id}}</td>
+                      <td>{{member.lname}}</td>
+                      <td>{{member.fname}}</td>
+                      <td>{{member.status}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col col-sm-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <form class="form-inline">
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="panel-label">Member Details</label>
+                      <a class="btn btn-default" ng-click="clear()" ng-disabled="!isEditable">Cancel</a>
+                      <a class="btn btn-default" ng-disabled="!isEditable" ng-click="save()">Save</a>
+                      <a class="btn btn-default" ng-disabled="isEditable" ng-click="edit()">Edit</a>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="panel-body">
+                <form class="form-inline">
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="id">Id:</label>
+                      <input type="number" class="form-control" aria-describedby="id" readonly ng-model="selected.id">
+                    </div>
+                  </div>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="lname">Name:</label>
+                      <div class="input-group-text">
+                        <input type="text" class="form-control" aria-describedby="fname" ng-readonly="!isEditable" ng-model="selected.fname">
+                        <p>First Name</p>
+                      </div>
+                      <div class="input-group-text">
+                        <input type="text" class="form-control" aria-describedby="lname" ng-readonly="!isEditable" ng-model="selected.lname">
+                        <p>Last Name</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="id">Status:</label>
+                      <select class="form-control" ng-model="selected.status" ng-disabled="!isEditable">
+                        <option value="A">Active</option>
+                        <option value="D">Deactive</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="address">Address:</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control" aria-describedby="address" ng-readonly="!isEditable" ng-model="selected.address">
+                        <span class="input-group-btn">
+
+                           <button class="btn btn-default" type="button">View</button>
+
+                          </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="id">Monthly Association Fee:</label>
+                      <input type="number" class="form-control" aria-describedby="id" ng-readonly="!isEditable" ng-model="selected.monthlyDues">
+                    </div>
+                  </div>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="id">With Bond:</label>
+                      <toggle class="bond-toggle" ng-model="selected.withBond" ng-disabled="!isEditable"></toggle>
+                    </div>
+                  </div>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="id">Contact Details:</label>
+                      <div class="btn-group">
+                        <a class="btn btn-default" ng-click="openContactModal()" ng-disabled="!isEditable">Add</a>
+                      </div>
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th class="col-sm-4">Type</th>
+                            <th class="col-sm-5">Number</th>
+                            <th class="col-sm-3"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="contact in contactList">
+                            <td class="col-sm-4">{{contact.contactType}}</td>
+                            <td class="col-sm-5">{{contact.number}}</td>
+                            <td class="col-sm-3">
+                              <a class="icon icon-delete" ng-click="deleteContact($index)"></a>
+                              <a class="icon icon-edit" ng-click="openContactModal($index)"></a>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+
+                    </div>
+                  </div>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+</div>
 </div>

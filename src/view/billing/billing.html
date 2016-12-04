@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
       <div class="page-header">
-        <h4>Water Billing</h4>
+        <h3>Water Billing</h3>
       </div>
       <ul class="nav nav-sidebar">
         <li ng-class="mode === 'view' ? 'active' : ''"><a ui-sref="main.viewBilling">Overview</a>
@@ -57,11 +57,16 @@
               </div>
               <div class="panel-body" data-spy="scroll">
                 <ul class="list-group no-padding" ui-scroll-viewport>
-                  <a class="list-group-item" ng-repeat="member in filteredList track by $index" ng-click="loadMember($index)">
+                  <a class="list-group-item" ng-repeat="member in filteredList track by $index" ng-click="loadMember($index)" ng-class="$index == selected.index ? 'active' : ''">
+
                     {{member.id }} - {{member.lName + ", " + member.fName | uppercase}}
+
                     <span class="badge">
+
                      {{member.remaining | currency : 'Php ' : 2}}
+
                     </span>
+
                   </a>
                 </ul>
               </div>
@@ -99,7 +104,9 @@
                       <div class="input-group">
                         <input type="text" class="form-control" aria-describedby="address" readonly ng-model="selected.member.address">
                         <span class="input-group-btn">
+
                            <button class="btn btn-default" type="button">View</button>
+
                           </span>
                       </div>
                     </div>
@@ -222,31 +229,33 @@
                   </div>
                   <label class="form-header">Collection</label>
                   <div class="form-inline-group">
-                    <div class="row btn-group">
-                      <div class="col col-sm-12">
+                    <div class="btn-group">
+                      <div class="">
                         <button class="btn btn-sm btn-default" ng-click="openPaymentModal()" ng-disabled="!(selected)">Add</button>
-                        <button class="btn btn-sm btn-default" ng-click="openPaymentModal()" ng-disabled="!(paymentModel.selected)">Edit</button>
-                        <button class="btn btn-sm btn-default" ng-click="deletePayment()" ng-disabled="!(paymentModel.selected)">Delete</button>
                       </div>
                     </div>
                     <table class="table table-hover collections-table">
-                      <tr>
-                        <th class="col-sm-1"></th>
-                        <th class="col-sm-3">Receipt Number</th>
-                        <th class="col-sm-4">Date</th>
-                        <!-- <th>Remarks</th> -->
-                        <th class="col-sm-4">Amount</th>
-                      </tr>
-                      <tr ng-repeat="data in selected.payments">
-                        <td>
-                          <input type="radio" name="collectionRadios" ng-model="paymentModel.selected" value="{{$index}}">
-                        </td>
-                        <td>{{data.receiptNo}}</td>
-                        <td>{{data.paymentDate | date : 'MMMM dd, yyyy'}}</td>
-                        <!-- <td>{{data.remarks}}</td> -->
-                        <td>{{data.amount | currency : "Php " : 2}}</td>
-                      </tr>
-
+                      <thead>
+                        <tr>
+                          <th class="col-sm-4">Receipt Number</th>
+                          <th class="col-sm-3">Date</th>
+                          <!-- <th>Remarks</th> -->
+                          <th class="col-sm-3">Amount</th>
+                          <th class="col-sm-2"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="data in selected.payments">
+                          <td>{{data.receiptNo}}</td>
+                          <td>{{data.paymentDate | date : 'MMMM dd, yyyy'}}</td>
+                          <!-- <td>{{data.remarks}}</td> -->
+                          <td class="align-right">{{data.amount | currency : "Php " : 2}}</td>
+                          <td>
+                            <a class="icon icon-delete" ng-click="deletePayment($index)"></a>
+                            <a class="icon icon-edit" ng-click="openPaymentModal($index)"></a>
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                   <div class="form-inline-group grand-total">

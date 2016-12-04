@@ -1,42 +1,36 @@
 <div class="modal-header">
-    <h3 class="modal-title" id="modal-title">Payment</h3>
+  <h3 class="modal-title" id="modal-title">Payment</h3>
 </div>
 <div class="modal-body" id="modal-body">
-    <form class="form-horizontal ">
-        <div class="form-group ">
-            <label class="col-sm-3 control-label ">Receipt Number</label>
-            <div class="col-sm-7 ">
-                <input type="text " class="form-control " ng-model="form.receiptNo">
-            </div>
-        </div>
-        <div class="form-group ">
-            <label class="col-sm-3 control-label ">Date</label>
-            <div class="col-sm-7 ">
-                <p class="input-group">
-                    <input type="text" class="form-control" uib-datepicker-popup="MMMM dd, yyyy" ng-model="form.receiptDate" is-open="popup.datepickerPayment" readonly="" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="popup.datepickerPayment = true"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </p>
-            </div>
-        </div>
-        <!-- <div class="form-group ">
-            <label class="col-sm-3 control-label ">Remarks</label>
-            <div class="col-sm-7 ">
-                <textarea class="form-control " ng-model="form.remarks" rows="4"></textarea>
-            </div>
-        </div> -->
-        <div class="form-group ">
-            <label class="col-sm-3 control-label ">Amount</label>
-            <div class="col-sm-7 ">
-                <div class="input-group">
-                    <div class="input-group-addon">Php</div>
-                    <input type="number" class="form-control " ng-model='form.amount'>
-                </div>
-            </div>
-    </form>
+  <form class="form-horizontal ">
+    <div class="form-group ">
+      <label class="col-sm-3 control-label ">Receipt Number</label>
+      <div class="col-sm-7 ">
+        <input type="text " class="form-control " ng-model="form.receiptNo">
+      </div>
     </div>
-    <div class="modal-footer ">
-        <button class="btn btn-default " type="button " ng-click="proceed() ">OK</button>
-        <button class="btn btn-default " type="button " ng-click="cancel() ">Cancel</button>
+    <div class="form-group ">
+      <label class="col-sm-3 control-label ">Date</label>
+      <div class="col-sm-7 ">
+        <p class="input-group">
+          <input type="text" class="form-control" uib-datepicker-popup="MMMM dd, yyyy" ng-model="form.receiptDate" is-open="popup.datepickerPayment" readonly="" />
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="popup.datepickerPayment = true"><i class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+        </p>
+      </div>
     </div>
+    <div class="form-group ">
+      <label class="col-sm-3 control-label ">Amount</label>
+      <div class="col-sm-7 ">
+        <div class="input-group">
+          <div class="input-group-addon">Php</div>
+          <input type="number" class="form-control " ng-model='form.amount'>
+        </div>
+      </div>
+  </form>
+  </div>
+  <div class="modal-footer ">
+    <button class="btn btn-default " type="button " ng-click="proceed() ">OK</button>
+    <button class="btn btn-default " type="button " ng-click="cancel() ">Cancel</button>
+  </div>

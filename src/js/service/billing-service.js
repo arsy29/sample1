@@ -1,22 +1,23 @@
 (function() {
     'use strict';
     angular.module("bvha2")
-        .service('BillingService', ["$http", function($http) {
-            var endpoint = "/endpoint";
+        .service('BillingService', ["$http", "api", function($http, api) {
+            // var api.endpoint = "/api.endpoint";
+            // var api.endpoint = "http://localhost:8080/billing-service";
 
             this.getBillingYear = function() {
-                return $http.get(endpoint + "/billing/periodYear");
+                return $http.get(api.endpoint + "/billing/periodYear");
             }
 
             this.getPeriodByYear = function(year) {
-                return $http.get(endpoint + "/billing/periodByYear/" + year);
+                return $http.get(api.endpoint + "/billing/periodByYear/" + year);
             }
 
             this.getMemberBillList = function(periodId) {
-                return $http.get(endpoint + "/billing/memberBillList/" + periodId);
+                return $http.get(api.endpoint + "/billing/memberBillList/" + periodId);
             }
             this.getDetails = function(memebrId, periodId) {
-                return $http.get(endpoint + "/billing/details/" + periodId + "/" + memebrId);
+                return $http.get(api.endpoint + "/billing/details/" + periodId + "/" + memebrId);
             }
 
             this.getBreakdown = function(amount) {

@@ -1,20 +1,21 @@
 (function() {
     'use strict';
     angular.module("bvha2")
-        .service("PaymentService", ["$http", function($http) {
-            var endpoint = "/endpoint";
+        .service("PaymentService", ["$http", "api", function($http, api) {
+            // api.var endpoint = "/api.endpoint";
+            // var api.endpoint = "http://localhost:8080/billing-service";
             var service = {};
 
             this.getPaymentsById = function(billingId) {
-                return $http.get(endpoint + "/payment/payments/" + billingId);
+                return $http.get(api.endpoint + "/payment/payments/" + billingId);
             }
 
             this.addOrEditPaymentsToId = function(payment) {
-                return $http.post(endpoint + "/payment/persist", payment);
+                return $http.post(api.endpoint + "/payment/persist", payment);
             }
 
             this.deletePaymentsById = function(paymentId) {
-                return $http.get(endpoint + "/payment/delete/" + paymentId);
+                return $http.get(api.endpoint + "/payment/delete/" + paymentId);
             }
 
         }])

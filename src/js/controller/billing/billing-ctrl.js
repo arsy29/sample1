@@ -11,8 +11,9 @@
             $scope.loadMember = function(index) {
                 //initialize
                 $scope.selected = {
-                        member: $scope.billing.billList[index],
-                        payments: []
+                        member: $scope.filteredList[index],
+                        payments: [],
+                        index: index
                     }
                     //billing
                 billingService.getDetails($scope.selected.member.id, $scope.billing.period.id).then(function(response) {
@@ -97,12 +98,13 @@
                 payments: [],
                 total: 0
             };
-            $scope.openPaymentModal = function() {
+            $scope.openPaymentModal = function(index) {
                 $uibModal.open({
                     templateUrl: "view/collection/payment-modal.html",
                     resolve: {
                         form: function() {
-                            return $scope.selected.payments[$scope.paymentModel.selected];
+                            return index != null && index != undefined ? $scope.selected.payments[index] : null;
+
                         }
                     },
                     controller: ['$scope', 'form', function($scope, form) {
@@ -141,8 +143,8 @@
 
 
             //DELETE
-            $scope.deletePayment = function() {
-                paymentService.deletePaymentsById($scope.selected.payments[$scope.paymentModel.selected].id).then(function(response) {
+            $scope.deletePayment = function(index) {
+                paymentService.deletePaymentsById($scope.selected.payments[index].id).then(function(response) {
                     if (response.responseStatus) {
                         console.log("SUCCESS");
                     }
