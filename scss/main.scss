@@ -36,6 +36,13 @@ body {
 
 .panel {
 	background: rgba(255,255,255,0.90);
+	.panel-body[disabled] {
+		 /*pointer-events: none;*/
+		 cursor: not-allowed;
+		 td{
+		 	pointer-events: none;
+		 }
+	}
 }
 
 .page-header {

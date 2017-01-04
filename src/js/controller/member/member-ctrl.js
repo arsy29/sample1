@@ -8,6 +8,7 @@
 
                 var memberList;
 
+
                 function loadMember() {
                     memberService.getMemberList().then(function(response) {
                         if (response.data.responseMessage === "SUCCESS") {
@@ -19,9 +20,6 @@
                 loadMember();
 
                 $scope.selectMember = function(idx) {
-                    if ($scope.isEditable) {
-                        return;
-                    }
                     $scope.selectedIdx = idx;
                     $scope.selected = $scope.membersFiltered[idx];
                     // $scope.selected.contactList = [{}, {}, {}, {}];
@@ -133,13 +131,9 @@
 
                 var updateIdx = function() {
                     if ($scope.selected) {
-                        $scope.selectedIdx = null;
-                        for (var i = 0; i < $scope.membersFiltered.length; i++) {
-                            if ($scope.membersFiltered[i].id == $scope.selected.id) {
-                                $scope.selectedIdx = i;
-                                break;
-                            }
-                        }
+                        $scope.selectedIdx = $scope.membersFiltered.findIndex(function(data) {
+                            return data.id == $scope.selected.id;
+                        });
                     }
                 }
 

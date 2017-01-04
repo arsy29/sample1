@@ -8,7 +8,7 @@
                 var filterDeffered;
                 var filterTimeout;
 
-                $scope.filter = function(keyword, list, filters) {
+                $scope.filter = function(keyword, list, filters, timeout) {
                     if (filterDeffered) {
                         $timeout.cancel(filterTimeout);
                         filterDeffered.reject();
@@ -36,8 +36,13 @@
                         }
                         filterDeffered.resolve(list);
                         filterDeffered = null;
-                    }, 800);
+                    }, timeout || 800);
                     return filterDeffered.promise;
+                }
+
+
+                $scope.deepCopy = function(obj) {
+                    return JSON.parse(JSON.stringify(obj));
                 }
 
             }

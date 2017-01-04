@@ -5,6 +5,7 @@
             console.log('ViewBillingCtrl');
             $scope.mode = "view";
             $scope.constant = constant;
+            $scope.hasCollection = true;
             //end
 
             /* Select Member */
@@ -78,14 +79,12 @@
             });
 
             function filter() {
-                if ($scope.filterKey && $scope.billing.billList) {
-                    $scope.$parent.filter($scope.filterKey, $scope.billing.billList, ['id', 'lName', 'fName']).then(function(result) {
-                        $scope.filteredList = result;
-                        console.log("filtered");
-                    })
-                } else {
-                    $scope.filteredList = $scope.billing.billList;
-                }
+                $scope.$parent.filter($scope.filterKey, $scope.billing.billList, ['id', 'lName', 'fName']).then(function(result) {
+                    $scope.filteredList = result;
+                    console.log("filtered");
+                }).finally(function() {
+                    updateIdx();
+                })
             }
 
 
@@ -169,6 +168,25 @@
                     $scope.computed.totalPayments = 0;
                     $scope.selected.payments.forEach(function(payment) {
                         $scope.computed.totalPayments += payment.amount;
+                    });
+                }
+                computeGrandTotal();
+            }
+
+            function computeGrandTotal() {
+                if ($scope.selected) {
+                    $scope.computed.grandTotal = $scope.selected.billing.grandTotal - $scope.computed.totalPayments;
+                    $scope.selected.member.remaining = $scope.computed.grandTotal;
+                }
+            }
+            $scope.$watch('computed.totalPayments', function() {
+                computeGrandTotal();
+            })
+
+            var updateIdx = function() {
+                if ($scope.selected) {
+                    $scope.selected.index = $scope.filteredList.findIndex(function(data) {
+                        return data.id == $scope.selected.member.id;
                     });
                 }
             }
