@@ -83,6 +83,10 @@
                 return $http.post(api.endpoint + '/billing/generatePeriod');
             }
 
+            this.reset = function() {
+                return $http.get(api.endpoint + '/billing/reset');
+            }
+
 
 
 

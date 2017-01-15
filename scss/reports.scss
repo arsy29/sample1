@@ -1,0 +1,24 @@
+.reports-body{
+	@extend .main-body;
+	.panel{
+		.panel-body{
+			padding:0;
+		}
+		.panel-heading{
+			.row{
+				padding-top: 5px;
+				.well {
+					margin-bottom: 0;
+				}
+				.btn {
+					    float: right;
+				}
+			}
+		}
+	}
+}
+
+.pdf-view{
+	width: 100%;
+	height: 88vh;
+}

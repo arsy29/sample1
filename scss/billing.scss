@@ -1,11 +1,6 @@
 
 .billing-body {
-
-	margin-top: 20px;
-	padding: 20px 20px 0 20px;
-	.flex {
-		display: flex;		
-	}
+	@extend .main-body;	
 	.members {
 	    display: flex;
 	    height: auto;

@@ -1,0 +1,104 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3 col-md-2 sidebar">
+      <div class="page-header">
+        <h3>Reports</h3>
+      </div>
+      <ul class="nav nav-sidebar">
+        <li ng-class="mode === 'bs' ? 'active' : ''"><a ui-sref="main.reports.bs">Billing Statement</a>
+        </li>
+        <li ng-class="mode === 'br' ? 'active' : ''"><a ui-sref="main.reports.br">Billing List Report</a>
+        </li>
+        <li ng-class="mode === 'pr' ? 'active' : ''"><a ui-sref="main.reports.pr">Payment List Report</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div ui-view class="reports-body">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <ng-form name="report-config" class="form-inline">
+              <div class="row">
+                <div class="col col-sm-6">
+                  <div class="form-group">
+                    <label class="control-label ">Year:</label>
+                    <select class="form-control " ng-options="item as item for item in yearList " ng-model="year">
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="control-label ">Month:</label>
+                    <select class="form-control " ng-options="item as constant.month[item.periodMonth] for item in periodList " ng-model="period ">
+                    </select>
+                  </div>
+                </div>
+                <div class="col col-sm-6 ">
+                  <div class="form-group ">
+                    <label class="control-label ">Cut-off Period:</label>
+                    <input class="form-control " type="Date " ng-model="periodCutOff" readonly>
+                  </div>
+                </div>
+              </div>
+              <div class="row" ng-show="mode === 'bs'">
+                <div class="col col-sm-6">
+                  <div class="form-group ">
+                    <label class="control-label ">Prepared by:</label>
+                    <input class="form-control " ng-model="reports.preparedBy">
+                  </div>
+                </div>
+                <div class="col col-sm-6" ng-show="mode === 'bs'">
+                  <div class="form-group ">
+                    <label class="control-label ">Noted by:</label>
+                    <input class="form-control " ng-model="reports.notedBy">
+                  </div>
+                </div>
+              </div>
+              <div class="row" ng-show="mode === 'bs'">
+                <div class="col col-sm-12">
+                  <div class="form-group">
+                    <label class="control-label ">Selection:</label>
+                    <select class="form-control " ng-model="isManual" ng-click="billing.getPeriodByYear(billing.year) " ng-init="isManual = 'f'">
+                      <option value="f" selected>All</option>
+                      <option value="t">Manual</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row " ng-show="isManual==='t' ">
+                <div class="col col-sm-12 ">
+                  <div class="selection ">
+                    <div class="selection-header">
+                      <div class="form-group filter">
+                        <label class="control-label ">Filter by:</label>
+                        <input class="form-control " ng-model="filterKey ">
+                      </div>
+                    </div>
+                    <div class="selection-body">
+                      <div class="row ">
+                        <div class="col col-sm-4 " ng-repeat="member in filteredList ">
+                          <button class="selection-item " ng-click="member.selected=! member.selected " ng-class="member.selected ? 'selected' : '' ">{{member.id + ' - ' + member.lName + ", " + member.fName}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row ">
+                <div class="col col-sm-12 ">
+                  <button class="btn btn-default " type="submit " ng-click="generate()">Generate</button>
+                </div>
+              </div>
+            </ng-form>
+          </div>
+          <div class="panel-body ">
+            <iFrame class="pdf-view" ng-src="{{pdf}}">
+            </iFrame>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

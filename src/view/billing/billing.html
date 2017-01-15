@@ -15,7 +15,6 @@
     </div>
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
       <div class="billing-body">
-
         <div class="row billing-bar">
           <form class="form-inline">
             <div class="col col-sm-7" ng-if="mode === 'view'">
@@ -32,11 +31,10 @@
             </div>
             <div class="col col-sm-7" ng-if="mode != 'view'">
               <a class="btn btn-default" ng-disabled="isEditable" ng-click="generate()">Generate</a>
-              <a class="btn btn-default" ng-disabled="isEditable">Edit</a>
               <a class="btn btn-default" ng-disabled="!isEditable" ng-click="reset()">Reset</a>
               <a class="btn btn-default" ng-disabled="!isEditable" ng-click="saveAsDraft()">Save as Draft</a>
               <a class="btn btn-default" ng-disabled="!isEditable" ng-click="submit()">Submit</a>
-              <a class="btn btn-default" ng-disabled="!isEditable" ng-click="cancel()">Cancel</a>
+              <a class="btn btn-default" ng-disabled="!isEditable" ng-click="cancel()">Cancel Changes</a>
 
             </div>
             <div class="col col-sm-5">

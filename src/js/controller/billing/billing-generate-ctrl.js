@@ -16,7 +16,9 @@
 
             //check for draft
             BillingService.checkForDraft().then(function(response) {
-                if (response.data.responseMessage = "SUCCCESS" && response.data.responseResult.list.length > 0) {
+                if (response.data.responseMessage = "SUCCCESS" &&
+                    response.data.responseResult &&
+                    response.data.responseResult.list.length > 0) {
                     $scope.isEditable = true;
                     $scope.isGenerate = true;
                     period = response.data.responseResult.period;
@@ -40,7 +42,7 @@
 
             }
 
-            $scope.reset = function() {
+            $scope.cancel = function() {
                 $scope.billList = $scope.$parent.deepCopy($scope.originalList);
                 filter(0, function() {
                     $scope.loadMember($scope.selected.index);
@@ -57,21 +59,28 @@
 
             function submit(status, callback) {
                 period.status = status;
-                BillingService.submit($scope.billList, $scope.billList[0].billingId ? false : true, period).then(function(response) {
+                BillingService.submit($scope.billList, period.id ? false : true, period).then(function(response) {
                     console.log(response);
-                    if (response.data.responseResult === "SUCCESS") {
+                    if (response.data.responseMessage === "SUCCESS") {
                         if (callback)
                             callback(response);
 
                         $scope.originalList = $scope.$parent.deepCopy($scope.billList);
                     }
-                    callback();
+                    if (callback)
+                        callback();
                 });
             }
 
-            $scope.cancel = function() {
-                $scope.reset();
+            $scope.reset = function() {
+                BillingService.reset().then(response => {
+                    if (response.data.responseMessage === "SUCCESS") {
+                        $scope.billList = response.data.responseResult;
+                        filter(0, () => $scope.loadMember($scope.selected.index));
+                    }
+                })
             }
+
 
             $scope.loadMember = function(index) {
                 $scope.selected = {
