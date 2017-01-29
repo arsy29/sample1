@@ -14,7 +14,7 @@
                 });
 
             $urlRouterProvider.otherwise(
-                '/login'
+                '/billing/dashboard'
             );
         }]);
 }());

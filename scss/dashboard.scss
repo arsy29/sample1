@@ -1,0 +1,33 @@
+.dashboard{
+	margin: 20px 10px;
+	.billing-bar{
+		margin: 10px 0;
+		padding: 10px;
+	}
+
+	.legend {
+		display: inline-flex;
+		.group-legend{
+			display: inline-flex;
+			margin: 4px;
+			.pallete{
+				height: 10px;
+			    width: 20px;
+			    border: solid 1px #616161;
+			    margin: 4px;
+			    &.Paid {
+				    background: #8BC34A;
+			    }
+			    &.Underpaid {
+			    	background: #FFEB3B;
+			    }
+			    &.Unpaid {
+			    	background: #F44336;
+			    }
+			}
+		}
+	}
+
+	.panel{
+	}
+}

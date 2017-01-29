@@ -130,6 +130,7 @@
                     if (result) {
                         result.memberId = $scope.selected.member.id;
                         result.billingId = $scope.selected.billing.id;
+                        result.billingPeriod = $scope.selected.billing.period;
                         paymentService.addOrEditPaymentsToId(result).then(function(response) {
                             if (response.responseStatus) {
                                 console.log("SUCCESS");

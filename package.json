@@ -1,9 +1,11 @@
 {
   "name": "bvha2",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular-chart.js": "^1.1.1"
+  },
   "scripts": {
-    "test": "gulp test"
+    "start": "electron src/main.js"
   },
   "devDependencies": {
     "browser-sync": "~2.9.11",

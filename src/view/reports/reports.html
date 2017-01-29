@@ -22,12 +22,12 @@
                 <div class="col col-sm-6">
                   <div class="form-group">
                     <label class="control-label ">Year:</label>
-                    <select class="form-control " ng-options="item as item for item in yearList " ng-model="year">
+                    <select class="form-control " ng-options="item as item for item in yearList " ng-model="$parent.year">
                     </select>
                   </div>
                   <div class="form-group">
                     <label class="control-label ">Month:</label>
-                    <select class="form-control " ng-options="item as constant.month[item.periodMonth] for item in periodList " ng-model="period ">
+                    <select class="form-control " ng-options="item as constant.month[item.periodMonth] for item in periodList " ng-model="period">
                     </select>
                   </div>
                 </div>
@@ -92,8 +92,20 @@
             </ng-form>
           </div>
           <div class="panel-body ">
-            <iFrame class="pdf-view" ng-src="{{pdf}}">
-            </iFrame>
+            <div class="custom-toolbar">
+              <a class="btn btn-default" ng-click="pdfViewer.zoomOut()"><i class="material-icons">&#xE900;</i></a>
+              <a class="btn btn-default" ng-click="pdfViewer.zoomIn()"><i class="material-icons">&#xE8FF;</i></a>
+              <a class="btn btn-default" ng-click="pdfViewer.prev()">
+                <i class="material-icons">&#xE5C4;</i>
+              </a>
+              <label>{{pdfViewer.getCurrentPage() || 0}} / {{pdfViewer.getPageCount() || 0}}</label>
+              <a class="btn btn-default" ng-click="pdfViewer.next()"><i class="material-icons">&#xE5C8;</i></a>
+              <a class="btn btn-default" href="{{$parent.download()}}" download="test"><i class="material-icons">&#xE2C4;</i></a>
+              <a class="btn btn-default" ng-click="print()"><i class="material-icons">&#xE8AD;</i></a>
+            </div>
+            <div drag-scroll="true" class="pdf">
+              <pdf-viewer delegate-handle="my-pdf-container" headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }" scale="page-fit"></pdf-viewer>
+            </div>
           </div>
         </div>
 

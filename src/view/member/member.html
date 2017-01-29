@@ -8,11 +8,11 @@
         <div class="row flex member-details">
           <div class="col col-sm-6 members">
             <div class="panel panel-default members-panel">
-              <div class="panel-heading">
+              <div class="panel-heading" ng-disabled="isEditable">
                 <form class='form-inline'>
                   <div class="form-group billing-filter">
                     <label class="control-label">Filter:</label>
-                    <input type="text" class="form-control" ng-model="keyword" ng-disabled="isEditable">
+                    <input type="text" class="form-control" ng-model="keyword">
                   </div>
                   <a class="btn btn-default" ng-click="newMember()" ng-disabled="isEditable">Add</a>
                 </form>
@@ -53,7 +53,7 @@
                   </div>
                 </form>
               </div>
-              <div class="panel-body">
+              <div class="panel-body" ng-disabled="!selected">
                 <form class="form-inline">
                   <div class="form-inline-group">
                     <div class="form-group">

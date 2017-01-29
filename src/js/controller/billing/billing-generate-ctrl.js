@@ -30,27 +30,31 @@
             })
 
             $scope.generate = function() {
-                $scope.isEditable = true;
-                $scope.isGenerate = true;
-                BillingService.generateBilling().then(function(response) {
-                    period = response.data.responseResult.period;
-                    $scope.billing.cutOff = new Date(period.periodCutoff);
-                    $scope.billList = response.data.responseResult.list;
-                    filter();
-                    $scope.originalList = $scope.$parent.deepCopy($scope.billList);
-                })
-
+                if (window.confirm("Are you sure want to generate billing statement for next month? Doing this will automatically archive current billing month and prevent changes of any kind.")) {
+                    $scope.isEditable = true;
+                    $scope.isGenerate = true;
+                    BillingService.generateBilling().then(function(response) {
+                        period = response.data.responseResult.period;
+                        $scope.billing.cutOff = new Date(period.periodCutoff);
+                        $scope.billList = response.data.responseResult.list;
+                        filter();
+                        $scope.originalList = $scope.$parent.deepCopy($scope.billList);
+                    })
+                }
             }
 
             $scope.cancel = function() {
-                $scope.billList = $scope.$parent.deepCopy($scope.originalList);
-                filter(0, function() {
-                    $scope.loadMember($scope.selected.index);
-                });
+                if (window.confirm("Are you sure you want cancel current changes?")) {
+                    $scope.billList = $scope.$parent.deepCopy($scope.originalList);
+                    filter(0, function() {
+                        $scope.loadMember($scope.selected.index);
+                    });
+                }
             }
 
             $scope.saveAsDraft = function(callback) {
-                submit("S");
+                if (window.confirm("Are you sure you want to save changes as a draft?"))
+                    submit("S");
             }
 
             $scope.submit = function() {
@@ -58,27 +62,31 @@
             }
 
             function submit(status, callback) {
-                period.status = status;
-                BillingService.submit($scope.billList, period.id ? false : true, period).then(function(response) {
-                    console.log(response);
-                    if (response.data.responseMessage === "SUCCESS") {
-                        if (callback)
-                            callback(response);
+                if (window.confirm("You are about to submit the final billing statements?")) {
+                    period.status = status;
+                    BillingService.submit($scope.billList, period.id ? false : true, period).then(function(response) {
+                        console.log(response);
+                        if (response.data.responseMessage === "SUCCESS") {
+                            if (callback)
+                                callback(response);
 
-                        $scope.originalList = $scope.$parent.deepCopy($scope.billList);
-                    }
-                    if (callback)
-                        callback();
-                });
+                            $scope.originalList = $scope.$parent.deepCopy($scope.billList);
+                        }
+                        if (callback)
+                            callback();
+                    });
+                }
             }
 
             $scope.reset = function() {
-                BillingService.reset().then(response => {
-                    if (response.data.responseMessage === "SUCCESS") {
-                        $scope.billList = response.data.responseResult;
-                        filter(0, () => $scope.loadMember($scope.selected.index));
-                    }
-                })
+                if (window.confirm("Are you sureyou want to revert to initial data?")) {
+                    BillingService.reset().then(response => {
+                        if (response.data.responseMessage === "SUCCESS") {
+                            $scope.billList = response.data.responseResult;
+                            filter(0, () => $scope.loadMember($scope.selected.index));
+                        }
+                    })
+                }
             }
 
 

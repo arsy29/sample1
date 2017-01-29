@@ -2,6 +2,7 @@
 	@extend .main-body;
 	.panel{
 		.panel-body{
+    background-color:#424242;
 			padding:0;
 		}
 		.panel-heading{
@@ -18,7 +19,19 @@
 	}
 }
 
-.pdf-view{
-	width: 100%;
-	height: 88vh;
+.pdf{
+	overflow: scroll;
+	height: 100vh;
+    text-align: center;
+}
+.custom-toolbar{
+	text-align: center;
+	margin: 5px;
+	label{
+	    margin: 0 20px;
+	    color: white;
+	}
+	a{
+		margin: 0 2px;
+	}
 }

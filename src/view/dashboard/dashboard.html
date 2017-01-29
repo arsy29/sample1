@@ -1,1 +1,117 @@
-<h1>DashBoard</h1>
+<div class="container-fluid ">
+  <div class="row">
+    <div class="col-sm-12 main">
+      <div class="dashboard">
+        <div class="billing-bar">
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="control-label">Year:</label>
+              <select class="form-control" ng-options="item as item for item in yearList" ng-model="year" ng-click="billing.getPeriodByYear(billing.year)">
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Month:</label>
+              <select class="form-control" ng-options="item as month[item.periodMonth] for item in periodList" ng-model="period">
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Cut-off Period:</label>
+              <input class="form-control" type="Date" ng-model="cutOff" readonly>
+            </div>
+          </form>
+        </div>
+        <div class="row ">
+          <div class="col-sm-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4>Monthly Collection</h4>
+              </div>
+              <div class="panel-body">
+                <canvas id="line" class="chart chart-line" chart-data="line.data" chart-labels="line.labels" chart-series="line.series">
+                </canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-sm-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4>Monthly Completion Graph</h4>
+              </div>
+              <div class="panel-body center-content">
+                <canvas id="bar" class="chart chart-bar" chart-data="bar.data" chart-labels="bar.labels" chart-series="bar.series" chart-colors="colors">
+                </canvas>
+                <div class="legend">
+                  <div class="group-legend" ng-repeat="item in pie.labels">
+                    <div class="pallete" ng-class="item"></div>
+                    <label>{{item}}</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 ">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4>Billing Month's Completion</h4>
+              </div>
+              <div class="panel-body">
+                <div class="row">
+                  <div class="col-md-4 center-content">
+                    <div class="legend">
+                      <div class="group-legend" ng-repeat="item in pie.labels">
+                        <div class="pallete" ng-class="item"></div>
+                        <label>{{item}}</label>
+                      </div>
+                    </div>
+                    <canvas id="pie" class="chart chart-pie" chart-data="pie.data" chart-labels="pie.labels" chart-options="pie.options" chart-colors="colors">
+                    </canvas>
+                  </div>
+                  <div class="col-md-4">
+                    <h4>Top 5 Outstanding Payers</h4>
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th class="col-sm-2">Id</th>
+                          <th class="col-sm-6">Name</th>
+                          <th class="col-sm-4">Payment Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="data in outstanding">
+                          <th class="col-sm-2">{{data.id}}</th>
+                          <th class="col-sm-6">{{data.lname}}, {{data.fname}}</th>
+                          <th class="col-sm-4">{{data.payment_date}}</th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="col-md-4">
+                    <h4>Top 5 Delinquent Payers</h4>
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th class="col-sm-2">Id</th>
+                          <th class="col-sm-6">Name</th>
+                          <th class="col-sm-4">Debt</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="data in delinquent">
+                          <th class="col-sm-2">{{data.id}}</th>
+                          <th class="col-sm-6">{{data.lname}}, {{data.fname}}</th>
+                          <th class="col-sm-4">{{data.remaining}}</th>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

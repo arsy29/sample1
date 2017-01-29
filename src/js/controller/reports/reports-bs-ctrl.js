@@ -7,6 +7,7 @@
                 console.log($state);
                 $scope.$parent.mode = 'bs';
                 $scope.reports = $localStorage.reports;
+                $scope.filename = "Billing Statement.pdf"
 
                 $scope.$watch('period', (newVal, oldVal) => {
                     if (newVal) {
@@ -50,7 +51,7 @@
                     } else {
                         $scope.reports.list = undefined;
                     }
-                    ReportsService.generateReportsBS($scope.reports).then($scope.showPdf)
+                    ReportsService.generateBS($scope.reports).then($scope.showPdf)
                 }
 
 

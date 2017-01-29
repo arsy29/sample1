@@ -113,20 +113,22 @@
                 }
 
                 $scope.save = function() {
-                    $scope.isEditable = false;
-                    memberService.addOrEditMember($scope.selected).then(function(response) {
-                        console.log('member', response);
-                        if (!$scope.selected.id) {
-                            $scope.selected = response.data.responseResult;
-                            updateIdx()
-                            $scope.contactList.forEach(function(contact) {
-                                contact.member = $scope.selected.id
-                                memberService.addOrEditContacts(contact).then(function(response) {
-                                    console.log('contact', response);
+                    if (window.confirm("Are you want to save changes/new member?")) {
+                        $scope.isEditable = false;
+                        memberService.addOrEditMember($scope.selected).then(function(response) {
+                            console.log('member', response);
+                            if (!$scope.selected.id) {
+                                $scope.selected = response.data.responseResult;
+                                updateIdx()
+                                $scope.contactList.forEach(function(contact) {
+                                    contact.member = $scope.selected.id
+                                    memberService.addOrEditContacts(contact).then(function(response) {
+                                        console.log('contact', response);
+                                    })
                                 })
-                            })
-                        }
-                    }).finally(loadMember);
+                            }
+                        }).finally(loadMember);
+                    }
                 }
 
                 var updateIdx = function() {

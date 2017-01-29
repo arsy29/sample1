@@ -1,0 +1,13 @@
+@mixin primary(){
+	background-color: $primary !important;
+	color: white !important;
+}
+
+@mixin active(){
+	background-color: $secondary  !important;
+	color: white !important;
+	border: none;
+	.badge{
+		color: $secondary !important;
+	}
+}
