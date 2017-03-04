@@ -23,6 +23,7 @@
   white-space: nowrap;
   direction: ltr;
 
+
   /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
   /* Support for Safari and Chrome. */
@@ -48,4 +49,8 @@
 
 .icon-edit::before{
   content:"\e3c9";
+}
+
+.icon-water::before{
+  content:"\e891";
 }

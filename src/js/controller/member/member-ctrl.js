@@ -139,7 +139,9 @@
                     }
                 }
 
-
+                $scope.log = function(_id) {
+                    console.log(_id);
+                }
 
             }
         ]);

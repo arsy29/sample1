@@ -2,67 +2,69 @@
   <div class="row">
     <div class="col-sm-3 col-md-2 sidebar">
       <div class="page-header">
-        <h3>Water Billing</h3>
+        <h3></span>Water Billing</h3>
       </div>
-      <ul class="nav nav-sidebar">
-        <li ng-class="mode === 'view' ? 'active' : ''"><a ui-sref="main.viewBilling">Overview</a>
+      <ul class=" nav nav-sidebar ">
+        <li ng-class="mode==='view' ? 'active' : '' "><a ui-sref="main.billing.view ">Overview</a>
         </li>
-        <li ng-class="mode === 'generate' ? 'active' : ''"><a ui-sref="main.generateBilling">Generate</a>
+        <li ng-class="mode==='generate' ? 'active' : '' "><a ui-sref="main.billing.generate ">Generate</a>
         </li>
-        <!--    <li ng-class="mode === 'edit' ? 'active' : ''"><a ui-sref="main.editBilling">Edit Current</a>
-        </li> -->
+        <li ng-class="mode==='edit' ? 'active' : '' "><a ui-sref="main.billing.edit ">Edit Current</a>
+        </li>
       </ul>
     </div>
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-      <div class="billing-body">
-        <div class="row billing-bar">
-          <form class="form-inline">
-            <div class="col col-sm-7" ng-if="mode === 'view'">
-              <div class="form-group">
-                <label class="control-label">Year:</label>
-                <select class="form-control" ng-options="item as item for item in billing.yearList" ng-model="billing.year" ng-click="billing.getPeriodByYear(billing.year)">
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main ">
+      <div ui-view class="billing-body ">
+        <div class="row billing-bar ">
+          <form class="form-inline ">
+            <div class="col col-sm-7 " ng-if="mode==='view' ">
+              <div class="form-group ">
+                <label class="control-label ">Year:</label>
+                <select class="form-control " ng-options="item as item for item in billing.yearList " ng-model="billing.year " ng-click="billing.getPeriodByYear(billing.year) ">
                 </select>
               </div>
-              <div class="form-group">
-                <label class="control-label">Month:</label>
-                <select class="form-control" ng-options="item as constant.month[item.periodMonth] for item in billing.periodList" ng-model="billing.period" ng-click="billing.getMemberBillList(billing.period)">
+              <div class="form-group ">
+                <label class="control-label ">Month:</label>
+                <select class="form-control " ng-options="item as constant.month[item.periodMonth] for item in billing.periodList " ng-model="billing.period " ng-click="billing.getMemberBillList(billing.period) ">
                 </select>
               </div>
             </div>
-            <div class="col col-sm-7" ng-if="mode != 'view'">
-              <a class="btn btn-default" ng-disabled="isEditable" ng-click="generate()">Generate</a>
-              <a class="btn btn-default" ng-disabled="!isEditable" ng-click="reset()">Reset</a>
-              <a class="btn btn-default" ng-disabled="!isEditable" ng-click="saveAsDraft()">Save as Draft</a>
-              <a class="btn btn-default" ng-disabled="!isEditable" ng-click="submit()">Submit</a>
-              <a class="btn btn-default" ng-disabled="!isEditable" ng-click="cancel()">Cancel Changes</a>
+            <div class="col col-sm-7 " ng-if="mode !='view' ">
+              <a class="btn btn-default " ng-disabled="isEditable " ng-click="edit() " ng-if="mode=='edit' ">Edit</a>
+              <a class="btn btn-default " ng-disabled="isEditable " ng-click="generate() " ng-if="mode=='generate' ">Generate</a>
+              <a class="btn btn-default " ng-disabled="!isEditable " ng-click="reset() ">Reset</a>
+              <a class="btn btn-default " ng-disabled="!isEditable " ng-click="saveAsDraft() " ng-if="mode=='generate' ">Save as Draft</a>
+
+              <a class="btn btn-default " ng-disabled="!isEditable " ng-click="submit() ">Submit</a>
+              <a class="btn btn-default " ng-disabled="!isEditable " ng-click="cancel() ">Cancel Changes</a>
 
             </div>
-            <div class="col col-sm-5">
-              <div class="form-group">
-                <label class="control-label">Cut-off Period:</label>
-                <input class="form-control" type="Date" ng-model="billing.cutOff" readonly>
+            <div class="col col-sm-5 ">
+              <div class="form-group ">
+                <label class="control-label ">Cut-off Period:</label>
+                <input class="form-control " type="Date " ng-model="billing.cutOff " readonly>
               </div>
             </div>
           </form>
         </div>
-        <div class="row flex billing-details">
-          <div class="col col-sm-4 members">
-            <div class="panel panel-default members-panel">
-              <div class="panel-heading">
+        <div class="row flex billing-details ">
+          <div class="col col-sm-4 members ">
+            <div class="panel panel-default members-panel ">
+              <div class="panel-heading ">
                 <form class='form-inline'>
-                  <div class="form-group billing-filter">
-                    <label class="control-label">Filter:</label>
-                    <input type="text" class="form-control" ng-model="filterKey">
+                  <div class="form-group billing-filter ">
+                    <label class="control-label ">Filter:</label>
+                    <input type="text " class="form-control " ng-model="filterKey ">
                   </div>
                 </form>
               </div>
-              <div class="panel-body" data-spy="scroll">
-                <ul class="list-group no-padding" ui-scroll-viewport>
-                  <a class="list-group-item" ng-repeat="member in filteredList track by $index" ng-click="loadMember($index)" ng-class="$index == selected.index ? 'active' : ''">
+              <div class="panel-body " data-spy="scroll ">
+                <ul class="list-group no-padding " ui-scroll-viewport>
+                  <a class="list-group-item " ng-repeat="member in filteredList track by $index " ng-click="loadMember($index) " ng-class="$index==s elected.index ? 'active' : '' ">
 
                     {{member.id }} - {{member.lName + ", " + member.fName | uppercase}}
 
-                    <span class="badge" ng-if="mode === 'view'">
+                    <span class="badge " ng-if="mode==='view' ">
 
                      {{member.remaining | currency : 'Php ' : 2}}
 
@@ -73,215 +75,215 @@
               </div>
             </div>
           </div>
-          <div class="col col-sm-8">
-            <div class="panel panel-default">
-              <div class="panel-heading" ng-disabled="!selected">
+          <div class="col col-sm-8 ">
+            <div class="panel panel-default ">
+              <div class="panel-heading " ng-disabled="!selected ">
                 <h4>Details</h4>
               </div>
-              <div class="panel-body" ng-disabled="!selected">
-                <form class="form-inline">
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="id">Id:</label>
-                      <input type="number" class="form-control" aria-describedby="id" readonly ng-model="selected.member.id">
+              <div class="panel-body " ng-disabled="!selected ">
+                <form class="form-inline ">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="id ">Id:</label>
+                      <input type="number " class="form-control " aria-describedby="id " readonly ng-model="selected.member.id ">
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="lname">Name:</label>
-                      <div class="input-group-text">
-                        <input type="text" class="form-control" aria-describedby="fname" readonly ng-model="selected.member.fName">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="lname ">Name:</label>
+                      <div class="input-group-text ">
+                        <input type="text " class="form-control " aria-describedby="fname " readonly ng-model="selected.member.fName ">
                         <p>First Name</p>
                       </div>
-                      <div class="input-group-text">
-                        <input type="text" class="form-control" aria-describedby="lname" readonly ng-model="selected.member.lName">
+                      <div class="input-group-text ">
+                        <input type="text " class="form-control " aria-describedby="lname " readonly ng-model="selected.member.lName ">
                         <p>Last Name</p>
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="address">Address:</label>
-                      <div class="input-group">
-                        <input type="text" class="form-control" aria-describedby="address" readonly ng-model="selected.member.address">
-                        <span class="input-group-btn">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="address ">Address:</label>
+                      <div class="input-group ">
+                        <input type="text " class="form-control " aria-describedby="address " readonly ng-model="selected.member.address ">
+                        <span class="input-group-btn ">
 
-                           <button class="btn btn-default" type="button">View</button>
+                           <button class="btn btn-default " type="button ">View</button>
 
                           </span>
                       </div>
                     </div>
                   </div>
-                  <label class="form-header" id="assocFee">Bill Breakdown</label>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="address">Monthly Association Dues:</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input type="number" class="form-control" aria-describedby="assocFee" readonl ng-model="selected.billing.assocFee" readonly>
+                  <label class="form-header " id="assocFee ">Bill Breakdown</label>
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="address ">Monthly Association Dues:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number " class="form-control " aria-describedby="assocFee " readonl ng-model="selected.billing.assocFee " readonly>
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="presReading">Water Reading:</label>
-                      <div class="input-group-text">
-                        <input type="number" class="form-control" aria-describedby="prevReading" ng-readonly="!isEditable" required ng-model="selected.billing.prevReading">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="presReading ">Water Reading:</label>
+                      <div class="input-group-text ">
+                        <input type="number " class="form-control " aria-describedby="prevReading " ng-readonly="!isEditable " required ng-model="selected.billing.prevReading ">
                         <p>Previous</p>
                       </div>
-                      <div class="input-group-text">
-                        <input type="number" class="form-control" aria-describedby="presReading" ng-readonly="!isEditable" required ng-model="selected.billing.currReading">
+                      <div class="input-group-text ">
+                        <input type="number " class="form-control " aria-describedby="presReading " ng-readonly="!isEditable " required ng-model="selected.billing.currReading ">
                         <p>Current</p>
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="consumption">Total Water Consumption:</label>
-                      <input type="number" class="form-control" aria-describedby="consumption" readonly ng-model="selected.billing.totalConsumed">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="consumption ">Total Water Consumption:</label>
+                      <input type="number " class="form-control " aria-describedby="consumption " readonly ng-model="selected.billing.totalConsumed ">
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="breakdown">Consumption to Amount Breakdown</label>
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="breakdown ">Consumption to Amount Breakdown</label>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group table">
-                      <div class="row" aria-describedby="breakdown" ng-repeat="data in selected.breakdown">
-                        <div class="col-sm-2">
+                  <div class="form-inline-group ">
+                    <div class="form-group table ">
+                      <div class="row " aria-describedby="breakdown " ng-repeat="data in selected.breakdown ">
+                        <div class="col-sm-2 ">
                           {{data.description}}
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 ">
                           Php {{data.amount}} cu.m
                         </div>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            <div class="input-group">
-                              <input class='form-control' type="number" ng-model="data.cubic" readonly>
-                              <div class="input-group-addon">cu.m</div>
+                        <div class="col-sm-4 ">
+                          <div class="form-group ">
+                            <div class="input-group ">
+                              <input class='form-control' type="number " ng-model="data.cubic " readonly>
+                              <div class="input-group-addon ">cu.m</div>
                             </div>
                           </div>
                         </div>
-                        <div class="col-sm-4">
-                          <div class="form-group">
-                            <div class="input-group">
-                              <div class="input-group-addon">Php</div>
-                              <input class='form-control' type="number" ng-model="data.total" readonly>
+                        <div class="col-sm-4 ">
+                          <div class="form-group ">
+                            <div class="input-group ">
+                              <div class="input-group-addon ">Php</div>
+                              <input class='form-control' type="number " ng-model="data.total " readonly>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label">Total Water Amount:</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input class='form-control' type="number" readonly ng-model="selected.billing.waterAmount">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label ">Total Water Amount:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input class='form-control' type="number " readonly ng-model="selected.billing.waterAmount ">
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label">Others:</label>
-                      <div class="input-group-text">
-                        <div class="input-group">
-                          <div class="input-group-addon">Php</div>
-                          <input type="number" class="form-control" ng-disabled="!isEditable" ng-model="selected.billing.otherAmount">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label ">Others:</label>
+                      <div class="input-group-text ">
+                        <div class="input-group ">
+                          <div class="input-group-addon ">Php</div>
+                          <input type="number " class="form-control " ng-disabled="!isEditable " ng-model="selected.billing.otherAmount ">
                         </div>
                         <p>Amount</p>
                       </div>
-                      <div class="input-group-text">
-                        <input type="text" class="form-control" ng-readonly="!isEditable" ng-model="selected.billing.otherDescription">
+                      <div class="input-group-text ">
+                        <input type="text " class="form-control " ng-readonly="!isEditable " ng-model="selected.billing.otherDescription ">
                         <p>Description</p>
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label">Current Month's Total:</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input class='form-control' type="number" readonly ng-model="selected.billing.currentTotal">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label ">Current Month's Total:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input class='form-control' type="number " readonly ng-model="selected.billing.currentTotal ">
                       </div>
                     </div>
                   </div>
-                  <label class="form-header">Previous Month's Billing Summary</label>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="prevTotal">Previous Total</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input type="number" class="form-control" aria-describedby="prevTotal" readonly ng-model="selected.billing.previousTotal">
+                  <label class="form-header ">Previous Month's Billing Summary</label>
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="prevTotal ">Previous Total</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number " class="form-control " aria-describedby="prevTotal " readonly ng-model="selected.billing.previousTotal ">
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="prevPayment">Previous Payment</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input type="number" class="form-control" aria-describedby="prevPayment" readonly ng-model="selected.billing.previousPaymentTotal">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="prevPayment ">Previous Payment</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number " class="form-control " aria-describedby="prevPayment " readonly ng-model="selected.billing.previousPaymentTotal ">
                       </div>
                     </div>
                   </div>
-                  <div class="form-inline-group">
-                    <div class="form-group">
-                      <label class="control-label" id="remaining">Previous Month's Remaining Balance:</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input type="number" class="form-control" aria-describedby="remaining" readonly ng-model="selected.billing.remaining">
+                  <div class="form-inline-group ">
+                    <div class="form-group ">
+                      <label class="control-label " id="remaining ">Previous Month's Remaining Balance:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number " class="form-control " aria-describedby="remaining " readonly ng-model="selected.billing.remaining ">
                       </div>
                     </div>
                   </div>
-                  <label class="form-header" ng-if="hasCollection">Collection</label>
-                  <div class="form-inline-group" ng-if="hasCollection">
-                    <div class="btn-group">
-                      <div class="">
-                        <button class="btn btn-sm btn-default" ng-click="openPaymentModal()" ng-disabled="!(selected)">Add</button>
+                  <label class="form-header " ng-if="hasCollection ">Collection</label>
+                  <div class="form-inline-group " ng-if="hasCollection ">
+                    <div class="btn-group ">
+                      <div class=" ">
+                        <button class="btn btn-sm btn-default " ng-click="openPaymentModal() " ng-disabled="!(selected) || billing.period.status !=='A' ">Add</button>
                       </div>
                     </div>
-                    <table class="table table-hover collections-table">
+                    <table class="table table-hover collections-table ">
                       <thead>
                         <tr>
-                          <th class="col-sm-4">Receipt Number</th>
-                          <th class="col-sm-3">Date</th>
+                          <th class="col-sm-4 ">Receipt Number</th>
+                          <th class="col-sm-3 ">Date</th>
                           <!-- <th>Remarks</th> -->
-                          <th class="col-sm-3">Amount</th>
-                          <th class="col-sm-2"></th>
+                          <th class="col-sm-3 ">Amount</th>
+                          <th class="col-sm-2 "></th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr ng-repeat="data in selected.payments">
+                        <tr ng-repeat="data in selected.payments ">
                           <td>{{data.receiptNo}}</td>
                           <td>{{data.paymentDate | date : 'MMMM dd, yyyy'}}</td>
                           <!-- <td>{{data.remarks}}</td> -->
-                          <td class="align-right">{{data.amount | currency : "Php " : 2}}</td>
+                          <td class="align-right ">{{data.amount | currency : "Php " : 2}}</td>
                           <td>
-                            <a class="icon icon-delete" ng-click="deletePayment($index)"></a>
-                            <a class="icon icon-edit" ng-click="openPaymentModal($index)"></a>
+                            <a class="icon icon-delete " ng-click="deletePayment($index) "></a>
+                            <a class="icon icon-edit " ng-click="openPaymentModal($index) "></a>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
-                  <div class="form-inline-group grand-total" ng-if="hasCollection">
-                    <div class="form-group">
-                      <label class="control-label" id="remaining">Collection Total:</label>
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input type="number" class="form-control" aria-describedby="remaining" readonly ng-model="computed.totalPayments">
+                  <div class="form-inline-group grand-total " ng-if="hasCollection ">
+                    <div class="form-group ">
+                      <label class="control-label " id="remaining ">Collection Total:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number " class="form-control " aria-describedby="remaining " readonly ng-model="computed.totalPayments ">
                       </div>
                     </div>
                   </div>
-                  <label class="form-header">Grand Total</label>
-                  <div class="form-inline-group grand-total">
-                    <div class="form-group">
-                      <div class="input-group">
-                        <div class="input-group-addon">Php</div>
-                        <input type="number" class="form-control" aria-describedby="remaining" readonly ng-model="computed.grandTotal">
+                  <label class="form-header ">Grand Total</label>
+                  <div class="form-inline-group grand-total ">
+                    <div class="form-group ">
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number " class="form-control " aria-describedby="remaining " readonly ng-model="computed.grandTotal ">
                       </div>
                     </div>
                   </div>

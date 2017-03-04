@@ -3,14 +3,12 @@
     angular.module('bvha2')
         .controller('GenerateBillingCtrl', ['$scope', 'BillingService', function($scope, BillingService) {
             console.log('GenerateBillingCtrl');
-            $scope.mode = 'generate';
+            $scope.$parent.mode = 'generate';
             $scope.billing = {};
             var period;
 
             function init() {
                 $scope.isEditable = false;
-                $scope.isGenerate = false;
-                $scope.isEdit = false;
             }
             init();
 
@@ -20,32 +18,30 @@
                     response.data.responseResult &&
                     response.data.responseResult.list.length > 0) {
                     $scope.isEditable = true;
-                    $scope.isGenerate = true;
                     period = response.data.responseResult.period;
                     $scope.billing.cutOff = new Date(period.periodCutoff);
                     $scope.billList = response.data.responseResult.list;
                     filter();
-                    $scope.originalList = $scope.$parent.deepCopy($scope.billList);
+                    $scope.originalList = angular.copy($scope.billList);
                 }
             })
 
             $scope.generate = function() {
                 if (window.confirm("Are you sure want to generate billing statement for next month? Doing this will automatically archive current billing month and prevent changes of any kind.")) {
                     $scope.isEditable = true;
-                    $scope.isGenerate = true;
                     BillingService.generateBilling().then(function(response) {
                         period = response.data.responseResult.period;
                         $scope.billing.cutOff = new Date(period.periodCutoff);
                         $scope.billList = response.data.responseResult.list;
                         filter();
-                        $scope.originalList = $scope.$parent.deepCopy($scope.billList);
+                        $scope.originalList = angular.copy($scope.billList);
                     })
                 }
             }
 
             $scope.cancel = function() {
                 if (window.confirm("Are you sure you want cancel current changes?")) {
-                    $scope.billList = $scope.$parent.deepCopy($scope.originalList);
+                    $scope.billList = angular.copy($scope.originalList);
                     filter(0, function() {
                         $scope.loadMember($scope.selected.index);
                     });
@@ -67,11 +63,9 @@
                     BillingService.submit($scope.billList, period.id ? false : true, period).then(function(response) {
                         console.log(response);
                         if (response.data.responseMessage === "SUCCESS") {
-                            if (callback)
-                                callback(response);
-
-                            $scope.originalList = $scope.$parent.deepCopy($scope.billList);
+                            $scope.originalList = angular.copy($scope.billList);
                         }
+                    }).finally(() => {
                         if (callback)
                             callback();
                     });

@@ -2,8 +2,13 @@
 	@extend .main-body;
 	.panel{
 		.panel-body{
-    background-color:#424242;
+			min-height: 90vh;
+		    background-color:#424242;
 			padding:0;
+			.page-control{
+				width: 50px;
+				color: black;
+			}
 		}
 		.panel-heading{
 			.row{
@@ -16,6 +21,10 @@
 				}
 			}
 		}
+	}
+	iframe{
+		width: 100%;
+		min-height: 80vh;
 	}
 }
 

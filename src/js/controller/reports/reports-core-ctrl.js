@@ -8,6 +8,10 @@
                         $scope.year = null;
                         $scope.fileURL = null;
                         $scope.trustedURL = null;
+                        $scope.pdf = {
+                            pageNum: 0
+                        };
+                        $scope.isLoading;
                         BillingService.getBillingYear()
                             .then(response => {
                                 if (response.data.responseStatus) {
@@ -33,18 +37,18 @@
                         })
 
                         $scope.showPdf = function(response) {
-                            var file = new Blob([response.data], {
-                                type: 'application/pdf'
-                            });
-                            $scope.fileURL = URL.createObjectURL(file);
-                            $scope.trustedURL = $sce.trustAsResourceUrl($scope.fileURL);
-                            $scope.pdfViewer = pdfDelegate.$getByHandle('my-pdf-container');
-                            $scope.pdfViewer.load($scope.fileURL);
+                            if (response) {
+                                var file = new Blob([response.data], {
+                                    type: 'application/pdf'
+                                });
+                                $scope.fileURL = URL.createObjectURL(file);
+                                $scope.trustedURL = $sce.trustAsResourceUrl($scope.fileURL);
+                                $scope.pdfViewer = pdfDelegate.$getByHandle('my-pdf-container');
+                                $scope.pdfViewer.load($scope.fileURL);
+                            }
+                            $scope.isLoading = false;
                         }
 
-                        $scope.$watch('mode', () => {
-                            $scope.pdf = null;
-                        })
 
                         $scope.download = function() {
                             return $scope.trustedURL;
@@ -54,7 +58,25 @@
                             window.printJS($scope.trustedURL);
                         }
 
-                        // var fs = window.require('fs')
-                        // console.log(printer.getPrinters());
+                        $scope.$watch(function() {
+                            if ($scope.pdfViewer) return $scope.pdfViewer.getCurrentPage()
+                        }, newVal => {
+                            if (newVal)
+                                $scope.pdf.pageNum = newVal;
+                        });
+
+
+                        $scope.$watch('pdf.pageNum', (newValue, oldValue) => {
+                            if (newValue && newValue != $scope.pdfViewer.getCurrentPage()) {
+                                if (newValue <= $scope.pdfViewer.getPageCount() && newValue > 0) {
+                                    $scope.pdfViewer.goToPage(newValue);
+                                    //todo:
+                                } else {
+                                    window.alert("Please input a valid Page Number.");
+                                    $scope.pdf.pageNum = oldValue;
+                                }
+                            }
+                        })
+
                     }])
             }())

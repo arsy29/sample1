@@ -86,26 +86,35 @@
               </div>
               <div class="row ">
                 <div class="col col-sm-12 ">
-                  <button class="btn btn-default " type="submit " ng-click="generate()">Generate</button>
+                  <button class="btn btn-default " type="submit " ng-click="generate()" ng-disabled="isLoading">Generate</button>
                 </div>
               </div>
             </ng-form>
           </div>
           <div class="panel-body ">
-            <div class="custom-toolbar">
+            <!-- <div class="custom-toolbar">
               <a class="btn btn-default" ng-click="pdfViewer.zoomOut()"><i class="material-icons">&#xE900;</i></a>
               <a class="btn btn-default" ng-click="pdfViewer.zoomIn()"><i class="material-icons">&#xE8FF;</i></a>
               <a class="btn btn-default" ng-click="pdfViewer.prev()">
                 <i class="material-icons">&#xE5C4;</i>
               </a>
-              <label>{{pdfViewer.getCurrentPage() || 0}} / {{pdfViewer.getPageCount() || 0}}</label>
+              <label>
+                <input type="number" class="page-control" ng-model="pdf.pageNum">/ {{pdfViewer.getPageCount() || 0}}</label>
               <a class="btn btn-default" ng-click="pdfViewer.next()"><i class="material-icons">&#xE5C8;</i></a>
-              <a class="btn btn-default" href="{{$parent.download()}}" download="test"><i class="material-icons">&#xE2C4;</i></a>
-              <a class="btn btn-default" ng-click="print()"><i class="material-icons">&#xE8AD;</i></a>
+              <a class="btn btn-default" href="{{$parent.download()}}" download="test"><i class="material-icons">&#xE2C4;</i></a> -->
+            <!-- <a class="btn btn-default" ng-click="print()"><i class="material-icons">&#xE8AD;</i></a> -->
+            <!-- </div> -->
+            <!-- <div drag-scroll="true" class="pdf"> -->
+            <!-- <pdf-viewer delegate-handle="my-pdf-container" headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }" scale="1"></pdf-viewer> -->
+            <iframe src="{{trustedURL}}" ng-if="trustedURL"></iframe>
+            <div class="spinner" ng-if="isLoading">
+              <div class="rect1"></div>
+              <div class="rect2"></div>
+              <div class="rect3"></div>
+              <div class="rect4"></div>
+              <div class="rect5"></div>
             </div>
-            <div drag-scroll="true" class="pdf">
-              <pdf-viewer delegate-handle="my-pdf-container" headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }" scale="page-fit"></pdf-viewer>
-            </div>
+            <!-- </div> -->
           </div>
         </div>
 

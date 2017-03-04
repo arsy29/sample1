@@ -18,5 +18,9 @@
                 return $http.get(api.endpoint + "/payment/delete/" + paymentId);
             }
 
+            this.getPaymentsByPeriod = function(periodId) {
+                return $http.get(api.endpoint + "/payment/paymentsByPeriod/" + periodId);
+            }
+
         }])
 }())

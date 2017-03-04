@@ -7,14 +7,14 @@
 
             $stateProvider
                 .state('main', {
-                    url: '/billing',
+                    url: '/bvha',
                     abstract: true,
                     templateUrl: 'view/core/core.html',
                     controller: 'CoreController'
                 });
 
             $urlRouterProvider.otherwise(
-                '/billing/dashboard'
+                '/bvha/dashboard'
             );
         }]);
 }());

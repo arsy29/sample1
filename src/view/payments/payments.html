@@ -1,0 +1,108 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col col-sm-12 main">
+      <div class="payment-body">
+        <div class="page-header">
+          <h3>Payments</h3>
+        </div>
+        <div class="billing-bar">
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="control-label">Year:</label>
+              <select class="form-control" ng-options="item as item for item in yearList" ng-model="year" ng-click="billing.getPeriodByYear(billing.year)">
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Month:</label>
+              <select class="form-control" ng-options="item as month[item.periodMonth] for item in periodList" ng-model="period">
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="control-label">Cut-off Period:</label>
+              <input class="form-control" type="Date" ng-model="cutOff" readonly>
+            </div>
+          </form>
+        </div>
+        <div class="row flex member-details">
+          <div class="col col-sm-8 members">
+            <div class="panel panel-default members-panel">
+              <div class="panel-heading" ng-disabled="isEditable">
+                <form class='form-inline'>
+                  <div class="form-group billing-filter ">
+                    <label class="control-label ">Filter By Transaction:</label>
+                    <select type="text " class="form-control " ng-model="filterKey" ng-options="item.value as item.description for item in filterKeys"></select>
+                  </div>
+                  <a class="btn btn-default" ng-click="openPaymentModal()" ng-disabled="isEditable">Add</a>
+                </form>
+              </div>
+              <div class="panel-body" data-spy="scroll" ng-disabled="isEditable">
+                <table class="table table-hover member-table">
+                  <thead>
+                    <tr>
+                      <th class="col-sm-3">Name</th>
+                      <th class="col-sm-2">Transaction</th>
+                      <th class="col-sm-2">Receipt No</th>
+                      <th class="col-sm-2">Receipt Date</th>
+                      <th class="col-sm-2">Amount</th>
+                      <th class="col-sm-1"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="payment in paymentsFiltered track by payment.id" ng-click="selectpayment($index)" ng-class="$index == selectedIdx ? 'active' : ''">
+                      <td>{{payment.name}}</td>
+                      <td>{{payment.transaction}}</td>
+                      <td>{{payment.receiptNo}}</td>
+                      <td>{{payment.paymentDate}}</td>
+                      <td>{{payment.amount | currency : 'Php ' : 2}}</td>
+                      <td>
+                        <a class="icon icon-edit" ng-click="openPaymentModal(payment)" ng-disabled="payment.paymentType === 1"></a>
+                        <a class="icon icon-delete" ng-click="deletePayment(payment)" ng-disabled="payment.paymentType === 1"></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col col-sm-4">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <form class="form-inline">
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="panel-label">Sub-Total</label>
+
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="panel-body" ng-disabled="!selected">
+                <form class="form-inline">
+                  <div class="form-inline-group" ng-repeat="item in pivot">
+                    <div class="form-group">
+                      <label class="control-label" id="id">{{item.name}}:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number" class="form-control" aria-describedby="id" readonly ng-model="item.amount" format="###,###.00">
+                      </div>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="form-inline-group">
+                    <div class="form-group">
+                      <label class="control-label" id="id">Total:</label>
+                      <div class="input-group ">
+                        <div class="input-group-addon ">Php</div>
+                        <input type="number" class="form-control" aria-describedby="id" readonly ng-model="totalAmount">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -6,9 +6,10 @@
             console.log($state);
             $scope.$parent.mode = 'pr';
             $scope.filename = "Payment Report.pdf"
+            $scope.$parent.trustedURL = null;
 
-
-             $scope.generate = function() {
+            $scope.generate = function() {
+                $scope.$parent.isLoading = true;
                 let reports = {
                     month: $scope.constant.month[$scope.period.periodMonth] + " " + $scope.year,
                     periodId: $scope.period.id

@@ -8,7 +8,7 @@
                 $scope.$parent.mode = 'bs';
                 $scope.reports = $localStorage.reports;
                 $scope.filename = "Billing Statement.pdf"
-
+                $scope.$parent.trustedURL = null;
                 $scope.$watch('period', (newVal, oldVal) => {
                     if (newVal) {
                         $scope.periodCutOff = new Date($scope.period.periodCutOff);
@@ -38,6 +38,7 @@
                 }
 
                 $scope.generate = function() {
+                    $scope.$parent.isLoading = true;
                     $localStorage.reports = $scope.reports;
                     $scope.reports.deadline = $scope.periodCutOff.toLocaleDateString();
                     $scope.reports.billingDate = $scope.constant.month[$scope.period.periodMonth] + " " + $scope.year;

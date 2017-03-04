@@ -17,6 +17,28 @@
             ],
             "ContactType": [
                 "Mobile", "Home", "Office", "Other"
-            ]
+            ],
+            "TransactionType": [{
+                value: 0,
+                description: "All"
+            }, {
+                value: 1,
+                description: "Water"
+            }, {
+                value: 2,
+                description: "Utility Rental"
+            }, {
+                value: 3,
+                description: "Court"
+            }, {
+                value: 3,
+                description: "Clubhouse"
+            }, {
+                value: 4,
+                description: "Shooting"
+            }, {
+                value: 5,
+                description: "Other"
+            }]
         })
 }())

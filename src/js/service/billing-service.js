@@ -79,6 +79,10 @@
                 return $http.get(api.endpoint + '/billing/checkForDraft');
             }
 
+            this.checkForActive = function() {
+                return $http.get(api.endpoint + '/billing/checkForActive');
+            }
+
             this.generatePeriod = function() {
                 return $http.post(api.endpoint + '/billing/generatePeriod');
             }

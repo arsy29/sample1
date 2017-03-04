@@ -1,0 +1,6 @@
+.payment-body{
+	@extend .member-body;
+	.billing-bar{
+		margin: 10px 0;
+	}
+}

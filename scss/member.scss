@@ -40,5 +40,15 @@
 	    flex-direction: column;
 	}
 
+	.image-map{
+		overflow-x: scroll;
+		overflow-y: scroll;
+		max-width: 98vw;
+		max-height: 40vh;
+	}
+
+	area.image-map{
+		background: blue;
+	}
 
 }

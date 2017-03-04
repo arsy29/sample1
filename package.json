@@ -1,11 +1,16 @@
 {
   "name": "bvha2",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "BVHA water billing system",
+  "author": "Arsenio Sarmiento",
+   "main": "src/index.js",
   "dependencies": {
     "angular-chart.js": "^1.1.1"
   },
   "scripts": {
-    "start": "electron src/main.js"
+    "start": "electron src/index.js",
+    "pack": "build --dir",
+  "dist": "build"
   },
   "devDependencies": {
     "browser-sync": "~2.9.11",

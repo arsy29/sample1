@@ -1,5 +1,7 @@
 @import '_variable';
 @import '_mixins';
+@import '_spinner';
+
 
 body {
 	font-size: 12px;
@@ -330,7 +332,15 @@ input{
 	text-align: center;
 }
 
-
+.billing-bar{
+	// margin: 10px 0;
+	padding: 10px;
+}
+a[disabled="disabled"]{
+	color:$inactive !important;
+	cursor: not-allowed;
+	pointer-events: none;
+}
 
 @import 'login';
 @import 'core';
@@ -339,4 +349,5 @@ input{
 @import 'fonts';
 @import 'reports';
 @import 'dashboard';
+@import 'payment';
 

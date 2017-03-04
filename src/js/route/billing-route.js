@@ -4,19 +4,21 @@
         .config(['$stateProvider', function($stateProvider) {
 
             $stateProvider
-                .state('main.viewBilling', {
+                .state('main.billing', {
+                    url: '/billing',
+                    abstract: true,
+                    templateUrl: "view/billing/billing.html"
+                })
+                .state('main.billing.view', {
                     url: '/view',
-                    templateUrl: 'view/billing/billing.html',
                     controller: 'ViewBillingCtrl'
                 })
-                .state('main.editBilling', {
+                .state('main.billing.edit', {
                     url: '/edit',
-                    templateUrl: 'view/billing/billing.html',
                     controller: 'EditBillingCtrl'
                 })
-                .state('main.generateBilling', {
+                .state('main.billing.generate', {
                     url: '/generate',
-                    templateUrl: 'view/billing/billing.html',
                     controller: 'GenerateBillingCtrl'
                 })
 
