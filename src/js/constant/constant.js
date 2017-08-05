@@ -23,21 +23,39 @@
                 description: "All"
             }, {
                 value: 1,
-                description: "Water"
+                description: "Water Dues"
             }, {
                 value: 2,
-                description: "Utility Rental"
+                description: "Water Meter"
             }, {
                 value: 3,
-                description: "Court"
-            }, {
-                value: 3,
-                description: "Clubhouse"
+                description: "Shooting Fee"
             }, {
                 value: 4,
-                description: "Shooting"
+                description: "Membership Fee"
             }, {
                 value: 5,
+                description: "Maintenance Fee"
+            }, {
+                value: 6,
+                description: "ID"
+            }, {
+                value: 7,
+                description: "Development Fee"
+            }, {
+                value: 8,
+                description: "Court Use"
+            }, {
+                value: 9,
+                description: "Construction Fee"
+            }, {
+                value: 10,
+                description: "Construction Bond"
+            }, {
+                value: 11,
+                description: "Sticker"
+            }, {
+                value: 12,
                 description: "Other"
             }]
         })

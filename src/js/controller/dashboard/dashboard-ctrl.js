@@ -26,15 +26,22 @@
                     renderMonthlyCompletion(newValue.id);
                     getTopOutstanding(newValue.id);
                     getTopDelinquent(newValue.id);
+                    renderMonthsRevenue(newValue.id);
                 }
             })
 
             $scope.colors = ["#8BC34A", "#FFEB3B", "#F44336"];
             $scope.pie = {};
             $scope.pie.labels = ["Paid", "Underpaid", "Unpaid"];
+            $scope.pie.options = {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                }
+            }
 
             function renderBillingCompletion(periodId) {
-                DashboardService.geCompletion(periodId).then(response => {
+                DashboardService.getCompletion(periodId).then(response => {
                     if (response.data.responseStatus > 0) {
                         let stats = response.data.responseResult;
                         $scope.pie.data = [stats.paid, stats.underpaid, stats.unpaid];
@@ -42,8 +49,51 @@
                 })
             }
 
+            $scope.colors = ["#8BC34A", "#FFEB3B", "#F44336"];
+            $scope.pie2 = {};
+            $scope.pie2.options = {
+                legend: {
+                    display: true,
+                    position: 'bottom'
+                }
+            }
+
+            function renderMonthsRevenue(periodId) {
+                DashboardService.getRevenue(periodId).then(response => {
+                    if (response.data.responseStatus > 0 && response.data.responseResult && response.data.responseResult.length > 0) {
+                        let labels = [];
+                        let data = [];
+                        for (let payment of response.data.responseResult) {
+                            let status = Constant.TransactionType[payment.paymentType];
+                            let item = labels.find((label, idx) => {
+                                if (label === status.description) {
+                                    data[idx]++;
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            });
+                            if (!item) {
+                                labels.push(status.description);
+                                data.push(1);
+                            }
+                        }
+                        $scope.pie2.labels = labels;
+                        $scope.pie2.data = data;
+                    } else {
+                        $scope.pie2.labels = ["No payment yet"];
+                        $scope.pie2.data = [0];
+                    }
+                })
+            }
+
             $scope.bar = {};
             $scope.bar.series = ["Paid", "Underpaid", "Unpaid"];
+            $scope.bar.options = {
+                legend: {
+                    display: true
+                }
+            }
 
             function renderMonthlyCompletion(periodId) {
                 DashboardService.getMonthlyCompletionGraph(periodId).then(response => {

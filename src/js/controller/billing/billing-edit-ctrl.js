@@ -52,8 +52,9 @@
                     billing: $scope.filteredList[index],
                     breakdown: []
                 }
-
-                $scope.selected.billing.otherAmount = 0;
+                if (!$scope.selected.billing.otherAmount) {
+                    $scope.selected.billing.otherAmount = 0;
+                }
             }
 
             $scope.$watch("filterKey", function() {

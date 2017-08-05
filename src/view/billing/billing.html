@@ -60,7 +60,7 @@
               </div>
               <div class="panel-body " data-spy="scroll ">
                 <ul class="list-group no-padding " ui-scroll-viewport>
-                  <a class="list-group-item " ng-repeat="member in filteredList track by $index " ng-click="loadMember($index) " ng-class="$index==s elected.index ? 'active' : '' ">
+                  <a class="list-group-item " ng-repeat="member in filteredList track by $index " ng-click="loadMember($index) " ng-class="$index==selected.index ? 'active' : '' ">
 
                     {{member.id }} - {{member.lName + ", " + member.fName | uppercase}}
 
@@ -262,8 +262,8 @@
                           <!-- <td>{{data.remarks}}</td> -->
                           <td class="align-right ">{{data.amount | currency : "Php " : 2}}</td>
                           <td>
-                            <a class="icon icon-delete " ng-click="deletePayment($index) "></a>
-                            <a class="icon icon-edit " ng-click="openPaymentModal($index) "></a>
+                            <a class="icon icon-delete " ng-click="deletePayment($index) " ng-disabled="!(selected) || billing.period.status !=='A' "></a>
+                            <a class="icon icon-edit " ng-click="openPaymentModal($index) " ng-disabled="!(selected) || billing.period.status !=='A' "></a>
                           </td>
                         </tr>
                       </tbody>

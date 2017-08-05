@@ -86,7 +86,7 @@
               </div>
               <div class="row ">
                 <div class="col col-sm-12 ">
-                  <button class="btn btn-default " type="submit " ng-click="generate()" ng-disabled="isLoading">Generate</button>
+                  <button class="btn btn-default " type="submit " ng-click="generate()" ng-disabled="isLoading || !periodCutOff">Generate</button>
                 </div>
               </div>
             </ng-form>

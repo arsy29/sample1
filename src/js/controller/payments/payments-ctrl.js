@@ -50,7 +50,7 @@
                             $scope.totalAmount += item.amount;
                             return {
                                 id: item.id,
-                                name: item.lname + ", " + item.fname,
+                                name: item.lname ? item.lname + ", " + item.fname : 'n/a',
                                 transaction: transaction,
                                 paymentType: item.paymentType,
                                 receiptNo: item.receipt_no,

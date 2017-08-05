@@ -39,6 +39,7 @@
 
                 $scope.generate = function() {
                     $scope.$parent.isLoading = true;
+                    $scope.$parent.trustedURL = null;
                     $localStorage.reports = $scope.reports;
                     $scope.reports.deadline = $scope.periodCutOff.toLocaleDateString();
                     $scope.reports.billingDate = $scope.constant.month[$scope.period.periodMonth] + " " + $scope.year;
@@ -52,7 +53,7 @@
                     } else {
                         $scope.reports.list = undefined;
                     }
-                    ReportsService.generateBS($scope.reports).then($scope.showPdf)
+                    ReportsService.generateBS($scope.reports).then($scope.showPdf).catch($scope.errorhandler)
                 }
 
 

@@ -2,7 +2,7 @@
     'use strict';
     angular.module('bvha2')
         .service('DashboardService', ['$http', 'api', function($http, api) {
-            this.geCompletion = function(periodId) {
+            this.getCompletion = function(periodId) {
                 return $http.get(api.endpoint + "/dashboard/completion-rate/" + periodId);
             }
 
@@ -20,6 +20,10 @@
 
             this.getDelinquent = function(periodId) {
                 return $http.get(api.endpoint + "/dashboard/delinquent/" + periodId);
+            }
+
+            this.getRevenue = function(periodId) {
+                return $http.get(api.endpoint + "/payment/paymentsByPeriod/" + periodId);
             }
         }])
 }())

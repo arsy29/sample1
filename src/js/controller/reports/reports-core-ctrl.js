@@ -1,7 +1,7 @@
             (function() {
                 'use strict';
                 angular.module('bvha2')
-                    .controller('ReportsCoreCtrl', ['$scope', 'Constant', 'BillingService', '$sce', 'pdfDelegate', function($scope, constant, BillingService, $sce, pdfDelegate) {
+                    .controller('ReportsCoreCtrl', ['$scope', 'Constant', 'BillingService', '$sce', 'pdfDelegate', 'ReportsService', function($scope, constant, BillingService, $sce, pdfDelegate, ReportsService) {
                         console.log('ReportsCoreCtrl');
                         $scope.constant = constant;
                         $scope.period = null;
@@ -43,8 +43,18 @@
                                 });
                                 $scope.fileURL = URL.createObjectURL(file);
                                 $scope.trustedURL = $sce.trustAsResourceUrl($scope.fileURL);
-                                $scope.pdfViewer = pdfDelegate.$getByHandle('my-pdf-container');
-                                $scope.pdfViewer.load($scope.fileURL);
+                                //$scope.trustedURL = $scope.fileURL; //$sce.trustAsResourceUrl($scope.fileURL);
+                                //$scope.pdfViewer = pdfDelegate.$getByHandle('my-pdf-container');
+                                //$scope.pdfViewer.load($scope.fileURL);
+                            }
+                            $scope.isLoading = false;
+                            $scope.$apply();
+                        }
+
+
+                        $scope.errorhandler = function(err) {
+                            if (err) {
+                                alert("Error Occured Please Contant System Admin");
                             }
                             $scope.isLoading = false;
                         }
@@ -74,6 +84,17 @@
                                 } else {
                                     window.alert("Please input a valid Page Number.");
                                     $scope.pdf.pageNum = oldValue;
+                                }
+                            }
+                        });
+
+                        $scope.$watch('mode', (newValue, oldValue) => {
+                            if (oldValue === newValue) {
+                                return;
+                            } else {
+                                let currentXHR = ReportsService.getCurrentXHR()
+                                if (currentXHR) {
+                                    currentXHR();
                                 }
                             }
                         })

@@ -92,7 +92,7 @@
                     breakdown: []
                 }
 
-                $scope.selected.billing.otherAmount = 0;
+                // $scope.selected.billing.otherAmount = 0;
             }
 
             $scope.$watch("filterKey", function() {

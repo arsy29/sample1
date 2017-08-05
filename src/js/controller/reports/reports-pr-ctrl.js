@@ -10,11 +10,12 @@
 
             $scope.generate = function() {
                 $scope.$parent.isLoading = true;
+                $scope.$parent.trustedURL = null;
                 let reports = {
                     month: $scope.constant.month[$scope.period.periodMonth] + " " + $scope.year,
                     periodId: $scope.period.id
                 }
-                ReportsService.generatePR(reports).then($scope.showPdf);
+                ReportsService.generatePR(reports).then($scope.showPdf).catch($scope.errorhandler);
 
             }
 
