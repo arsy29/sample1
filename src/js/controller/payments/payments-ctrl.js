@@ -99,7 +99,7 @@
                                 }
                                 $scope.$watch("form.receiptDate", function() {
                                     if ($scope.form.receiptDate) {
-                                        $scope.form.paymentDate = $scope.form.receiptDate.toISOString().split("T")[0];
+                                        $scope.form.paymentDate = new Date($scope.form.receiptDate + $scope.form.receiptDate.getTimezoneOffset()).toISOString().split("T")[0];
 
                                     }
                                 });

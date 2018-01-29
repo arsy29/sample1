@@ -67,7 +67,7 @@
                             let status = Constant.TransactionType[payment.paymentType];
                             let item = labels.find((label, idx) => {
                                 if (label === status.description) {
-                                    data[idx]++;
+                                    data[idx]+=payment.amount;
                                     return true;
                                 } else {
                                     return false;
@@ -75,7 +75,7 @@
                             });
                             if (!item) {
                                 labels.push(status.description);
-                                data.push(1);
+                                data.push(payment.amount);
                             }
                         }
                         $scope.pie2.labels = labels;
